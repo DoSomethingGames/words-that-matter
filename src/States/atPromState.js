@@ -6,6 +6,15 @@ function atProm() {
   // These are the actual sprites and buttons that will be created and destroyed as the dialogue progresses
   var button1, button2, dateDialogue, friendDialogue;
 
+  // This is a way to move linearly through the dialogue
+  var dialogueTree = [0, 'date', 'friend', 1, 'date', 'friend', 'date', 2, 'friend', 'date', 3, 'date', 4];
+  var dateDialogueTree = ['date1', 'date2', 'date3', 'date4', 'date5'];
+  var friendDialogueTree = ['friend1', 'friend2', 'friend3'];
+
+  var count, dCount, fCount;
+  dCount = 0;
+  fCount = 0;
+
   function init() {}
 
   function preload() {
@@ -40,11 +49,6 @@ function atProm() {
 
     game.stage.backgroundColor = '#182d3b';
     
-    // This is a way to move linearly through the dialogue
-    var dialogueTree = [0, 'date', 'friend', 1, 'date', 'friend', 'date', 2, 'friend', 'date', 3, 'date', 4];
-    var dateDialogueTree = ['date1', 'date2', 'date3', 'date4', 'date5'];
-    var friendDialogueTree = ['friend1', 'friend2', 'friend3'];
-    
     // These represent the two player choices, and are stand-ins throughout the progression
     var key1, key2;
     var timeDelay = 10000;
@@ -54,12 +58,6 @@ function atProm() {
      * player choice button2(game.world.centerX - 350, game.world.centerY + 50)
      */
 
-
-    var count, dCount, fCount;
-    dCount = 0;
-    fCount = 0;
-
-    
     for (count = 0; count < dialogueTree.length; count++) {
       if (typeof dialogueTree[count] === 'number') {
         switch(dialogueTree[count]) {
@@ -100,12 +98,15 @@ function atProm() {
             console.log('error in switch');
         }
 
-        console.log('player choice');
+        //console.log('player choice');
 
         button1 = createChoiceButton1(key1);
         button1.inputEnabled = true;
+        button1.onInputDown = checkOtherDialogue;
+
         button2 = createChoiceButton2(key2);
         button2.inputEnabled = true;
+        button2.onInputDown = checkOtherDialogue;
 
         console.log('player choice');
 
@@ -113,25 +114,11 @@ function atProm() {
         while (button1 && button2) {
           ;
         }
-        */
-        
-
-      } else if (dialogueTree[count] == 'date') {
-          setTimeout(dateDialogue = createDateDialogue(dateDialogueTree[dCount]), 
-            timeDelay);
-          dateDialogue.destroy();
-          dCount++;
-          console.log('date');
-
-      } else if (dialogueTree[count] == 'friend') {
-          setTimeout(friendDialogue = createFriendDialogue(friendDialogueTree[fCount]), 
-            timeDelay);
-          fCount++;
-          friendDialogue.destroy();
-          console.log('friend');
+        */  
 
       } else {
-        console.log('error in matching dialogueTree');
+        checkOtherDialogue();
+        //console.log('error in matching dialogueTree');
       }
     }
   }
@@ -166,6 +153,25 @@ function atProm() {
 
   function createFriendDialogue(key) {
     return game.add.sprite(game.world.centerX + 50, game.world.centerY - 200, key);
+  }
+
+  function checkOtherDialogue() {
+    if (dialogueTree[count] == 'date') {
+      setTimeout(dateDialogue = createDateDialogue(dateDialogueTree[dCount]), 
+        timeDelay);
+      dateDialogue.destroy();
+      dCount++;
+      console.log('date');
+
+    } else if (dialogueTree[count] == 'friend') {
+        setTimeout(friendDialogue = createFriendDialogue(friendDialogueTree[fCount]), 
+          timeDelay);
+        fCount++;
+        friendDialogue.destroy();
+        console.log('friend');
+    } else {
+        console.log('error in checkOtherDialogue');
+    }
   }
 
   return {
