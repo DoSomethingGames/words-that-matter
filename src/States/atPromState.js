@@ -14,6 +14,7 @@ function atProm() {
   var count, dCount, fCount;
   dCount = 0;
   fCount = 0;
+  var timeDelay = 10000;
 
   function init() {}
 
@@ -51,7 +52,6 @@ function atProm() {
     
     // These represent the two player choices, and are stand-ins throughout the progression
     var key1, key2;
-    var timeDelay = 10000;
 
     /* ## (x,y) for various assets
      * player choice button1(game.world.centerX + 50, game.world.centerY + 50)
@@ -157,17 +157,15 @@ function atProm() {
 
   function checkOtherDialogue() {
     if (dialogueTree[count] == 'date') {
-      setTimeout(dateDialogue = createDateDialogue(dateDialogueTree[dCount]), 
-        timeDelay);
-      dateDialogue.destroy();
+      dateDialogue = createDateDialogue(dateDialogueTree[dCount]);
+      setTimeout(dateDialogue.destroy, timeDelay);
       dCount++;
       console.log('date');
 
     } else if (dialogueTree[count] == 'friend') {
-        setTimeout(friendDialogue = createFriendDialogue(friendDialogueTree[fCount]), 
-          timeDelay);
+        friendDialogue = createFriendDialogue(friendDialogueTree[fCount]);
+        setTimeout(friendDialogue.destroy, timeDelay);
         fCount++;
-        friendDialogue.destroy();
         console.log('friend');
     } else {
         console.log('error in checkOtherDialogue');
