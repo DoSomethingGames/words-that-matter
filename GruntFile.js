@@ -31,7 +31,8 @@ module.exports = function (grunt) {
     concat: {
       dist: {
         src: [  "src/lib/**/*.js",
-          "src/game/**/*.js"
+          "src/game/main.js",
+          "src/States/atPromState.js"
            ],
         dest: 'deploy/js/<%= pkg.name %>.js'
       }
