@@ -1,12 +1,7 @@
-var dialogueGroup = game.add.group();
-
 function AtProm() {
 
   // These are the actual sprites and buttons that will be created and destroyed as the dialogue progresses
-  var button1, button2, dateDialogue, friendDialogue;
-
-  // This is a way to move linearly through the dialogue
-  //var dialogueTree = [0, 'date', 'friend', 1, 'date', 'friend', 'date', 2, 'friend', 'date', 3, 'date', 4];
+  var choiceButton1, choiceButton2, dateDialogue, friendDialogue;
   
   var dialogueTree = [
     {type: 'choice', msg: 0, delay: -1, duration: -1}, 
@@ -19,16 +14,22 @@ function AtProm() {
     {type: 'choice', msg: 2, delay: -1, duration: -1},
     {type: 'friend', msg: 'friend3', delay: -1, duration: -1},
     {type: 'date', msg: 'date4', delay: -1, duration: -1},
-    {type: 'choice', msg: 0, delay: -1, duration: -1},
+    {type: 'choice', msg: 3, delay: -1, duration: -1},
     {type: 'date', msg: 'date5', delay: -1, duration: -1},
     {type: 'choice', msg: 4, delay: -1, duration: -1}
     ];
 
   var count;
   var DIALOGUE_DISPLAY_TIME = 4000;
-  var dialogueGroup = game.add.group();
 
-  function init() {}
+  function init() {
+    count = 0;
+
+    choiceButton1 = null;
+    choiceButton2 = null;
+    dateDialogue = null;
+    friendDialogue = null;
+  }
 
   function preload() {
 
@@ -65,68 +66,15 @@ function AtProm() {
     console.log('in create');
 
     game.stage.backgroundColor = '#182d3b';
-    
-    // These represent the two player choices, and are stand-ins throughout the progression
-    var key1, key2;
 
-
-    
-
-    for (count = 0; count < dialogueTree.length; count++) {
-      console.log(count); 
-      displayNext();
-    }
-
-    /* ## (x,y) for various assets
-     * player choice button1(game.world.centerX + 50, game.world.centerY + 50)
-     * player choice button2(game.world.centerX - 350, game.world.centerY + 50)
-     */
-
- /* function displayNext() {
-    // destroy any existing dialogue sprite that's currently open
-
-    if (dialogueTree[progress] typeof === 'number') {
-      // create buttons and show choices for dialogue progress 0
-
-      // set listener for button clicks
-      choiceButton1.onInputUp(onChoiceUp, {button: choiceButton1});
-      choiceButton2.onInputUp(onChoiceUp, {button: choiceButton2});
-    }
-    else if (dialogueTree[progress] == 'date') {
-      // show date dialogue
-
-      // move onto next dialogue after some set time
-      setTimeout(displayNext, DATE_DIALOGUE_DISPLAY_TIME);
-
-      // Note: if we wanted dialogue to overlap at some points, we could set different logic for when dialogue
-      // gets destroyed and when it gets created
-    }
-    else if (dialogueTree[progress] == 'friend') {
-      // show friend dialogue
-
-      // move onto next dialogue after some set time
-      setTimeout(displayNext, FRIEND_DIALOGUE_DISPLAY_TIME);
-    }
-
-    progress++;
-    }
-
-    function onChoiceUp() {
-    // determine which button just got clicked by checking this.button
-    // log the selection
-
-    // progress to the next dialog item
     displayNext();
-    }
-
-*/    
   }
 
   function update() {}
 
 
   function createChoiceButton(key, x, y) {
-    return game.add.button(x, y, key, displayNext, null, 2, 1, 0);
+    return game.add.button(x, y, key, null, null, 2, 1, 0);
   }
 
   function createChoiceButton1(key) {
@@ -137,15 +85,6 @@ function AtProm() {
     return createChoiceButton(key, game.world.centerX - 350, game.world.centerY + 50);
   }
 
-  function killButton(button) {
-      button.destroy();
-  }
-
-  function killAllButton() {
-      killButton(button1);
-      killButton(button2);
-  }
-
   function createDateDialogue(key) {
     return game.add.sprite(game.world.centerX -350, game.world.centerY - 200, key);
   }
@@ -154,99 +93,110 @@ function AtProm() {
     return game.add.sprite(game.world.centerX + 50, game.world.centerY - 200, key);
   }
 
-/*  function checkOtherDialogue() {
-    if (dialogueTree[count] == 'date') {
-      dateDialogue = createDateDialogue(dialogueTree[count].msg);
-      otherDialogue.add(dateDialogue);
-      setTimeout(dateDialogue.destroy(), timeDelay);
-
-      console.log('date');
-
-    } else if (dialogueTree[count] == 'friend') {
-        friendDialogue = createFriendDialogue(dialogueTree[count].msg);
-        otherDialogue.add(friendDialogue);
-        setTimeout(friendDialogue.destroy, timeDelay);
-
-        console.log('friend');
-    } else {
-        console.log('error in checkOtherDialogue');
-    }
-  }*/
-
+  /**
+   * @todo comment me
+   */
   function displayNext() {
 
-    //clears screen
-    
-    dialogueGroup.destroy();
+    // @todo check upper bound on `count`
+    if (count >= dialogueTree.length) {
+      // @todo go to next state
+    }
 
-      //for (count = 0; count < dialogueTree.length; count++) {
-        if (dialogueTree[count].type == 'choice') {
-          
-          //checking for correct player choice dialogue buttons
-          switch(dialogueTree[count].msg) {
+    if (dialogueTree[count].type == 'choice') {
 
-            case 0:
-              key1 = 'choice1a';
-              key2 = 'choice1b';
-              console.log('c1');
-              break;
+      //checking for correct player choice dialogue buttons
+      switch(dialogueTree[count].msg) {
 
-            case 1:
-              key1 = 'choice2a';
-              key2 = 'choice2b';
-              console.log('c2');
-              break;
+        case 0:
+          key1 = 'choice1a';
+          key2 = 'choice1b';
+          console.log('c1');
+          break;
 
-            case 2:
-              key1 = 'choice3a';
-              key2 = 'choice3b';
-              console.log('c3');
-              break;
+        case 1:
+          key1 = 'choice2a';
+          key2 = 'choice2b';
+          console.log('c2');
+          break;
 
-            case 3:
-              key1 = 'choice4a';
-              key2 = 'choice4b';
-              console.log('c4');
-              break;
+        case 2:
+          key1 = 'choice3a';
+          key2 = 'choice3b';
+          console.log('c3');
+          break;
 
-            case 4:
-              key1 = 'choice5a';
-              key2 = 'choice5b';
-              console.log('c5');
-              break;
+        case 3:
+          key1 = 'choice4a';
+          key2 = 'choice4b';
+          console.log('c4');
+          break;
 
-            default:
-              console.log('error in switch');
-          }
+        case 4:
+          key1 = 'choice5a';
+          key2 = 'choice5b';
+          console.log('c5');
+          break;
 
-          button1 = createChoiceButton1(key1);
-          dialogueGroup.add(button1);
-          button1.inputEnabled = true;
-          button1.events.onInputUp.add(displayNext);
-
-          button2 = createChoiceButton2(key2);
-          dialogueGroup.add(button2);
-          button2.inputEnabled = true;
-          button2.events.onInputUp.add(displayNext);
-
-
-        } else if (dialogueTree[count].type == 'date') {
-          dateDialogue = createDateDialogue(dialogueTree[count].msg);
-          dialogueGroup.add(dateDialogue);
-          setTimeout(displayNext, DIALOGUE_DISPLAY_TIME);
-          console.log('date');
-        
-        } else if (dialogueTree[count].type == 'friend') {
-          friendDialogue = createFriendDialogue(dialogueTree[count].msg);
-          dialogueGroup.add(friendDialogue);
-          setTimeout(displayNext, DIALOGUE_DISPLAY_TIME);
-          console.log('friend');
-        
-        } else {
-          console.log('unable to match type');
-        }
+        default:
+          console.log('error in switch');
       }
-    //}
+
+      choiceButton1 = createChoiceButton1(key1);
+      choiceButton1.inputEnabled = true;
+      choiceButton1.events.onInputUp.add(onChoiceSelected, {selected: 1});
+
+      choiceButton2 = createChoiceButton2(key2);
+      choiceButton2.inputEnabled = true;
+      choiceButton2.events.onInputUp.add(onChoiceSelected, {selected: 2});
+    }
+    else if (dialogueTree[count].type == 'date') {
+      dateDialogue = createDateDialogue(dialogueTree[count].msg);
+      setTimeout(displayNext, DIALOGUE_DISPLAY_TIME);
+      console.log('date');
+    }
+    else if (dialogueTree[count].type == 'friend') {
+      friendDialogue = createFriendDialogue(dialogueTree[count].msg);
+      setTimeout(displayNext, DIALOGUE_DISPLAY_TIME);
+      console.log('friend');
+    }
+    else {
+      console.log('unable to match type');
+    }
+
+    // Progress the dialogue tree
+    count++;
+  }
+
+  /**
+   * @todo comment me
+   */
+  function onChoiceSelected() {
+    // clear the screen
+    if (dateDialogue) {
+      dateDialogue.destroy();
+    }
+    
+    if (friendDialogue) {
+      friendDialogue.destroy();
+    }
+
+    if (choiceButton1) {
+      choiceButton1.destroy();
+    }
+
+    if (choiceButton2) {
+      choiceButton2.destroy();
+    }
+
+    dateDialogue = null;
+    friendDialogue = null;
+    choiceButton1 = null;
+    choiceButton2 = null;
+
+    // Display the next dialogue
+    displayNext();
+  }
 
   return {
       init: init,
