@@ -7,9 +7,23 @@ function AtProm() {
   var button1, button2, dateDialogue, friendDialogue;
 
   // This is a way to move linearly through the dialogue
-  var dialogueTree = [0, 'date', 'friend', 1, 'date', 'friend', 'date', 2, 'friend', 'date', 3, 'date', 4];
-  var dateDialogueTree = ['date1', 'date2', 'date3', 'date4', 'date5'];
-  var friendDialogueTree = ['friend1', 'friend2', 'friend3'];
+  //var dialogueTree = [0, 'date', 'friend', 1, 'date', 'friend', 'date', 2, 'friend', 'date', 3, 'date', 4];
+  
+  var dialogueTree = [
+    {type: 'choice', msg: 0, delay: -1, duration: -1}, 
+    {type: 'date', msg: 'date1', delay: -1, duration: -1},
+    {type: 'friend', msg: 'friend1', delay: -1, duration: -1},
+    {type: 'choice', msg: 1, delay: -1, duration: -1},
+    {type: 'date', msg: 'date2', delay: -1, duration: -1},
+    {type: 'friend', msg: 'friend2', delay: -1, duration: -1},
+    {type: 'date', msg: 'date3', delay: -1, duration: -1},
+    {type: 'choice', msg: 2, delay: -1, duration: -1},
+    {type: 'friend', msg: 'friend3', delay: -1, duration: -1},
+    {type: 'date', msg: 'date4', delay: -1, duration: -1},
+    {type: 'choice', msg: 0, delay: -1, duration: -1},
+    {type: 'date', msg: 'date5', delay: -1, duration: -1},
+    {type: 'choice', msg: 4, delay: -1, duration: -1}
+    ];
 
   var count, dCount, fCount;
   dCount = 0;
