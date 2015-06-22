@@ -1,7 +1,7 @@
 //var game = new Phaser.Game(800, 600, Phaser.AUTO, 'game'); // { preload: preload, create: create });
 
 
-function atProm() {
+function AtProm() {
 
   // These are the actual sprites and buttons that will be created and destroyed as the dialogue progresses
   var button1, button2, dateDialogue, friendDialogue;
@@ -158,7 +158,7 @@ function atProm() {
   function checkOtherDialogue() {
     if (dialogueTree[count] == 'date') {
       dateDialogue = createDateDialogue(dateDialogueTree[dCount]);
-      setTimeout(dateDialogue.destroy, timeDelay);
+      setTimeout(dateDialogue.destroy(), timeDelay);
       dCount++;
       console.log('date');
 
@@ -180,5 +180,5 @@ function atProm() {
   }
 }
 
-game.state.add('at-prom', new atProm());
+game.state.add('at-prom', new AtProm());
 game.state.start('at-prom');
