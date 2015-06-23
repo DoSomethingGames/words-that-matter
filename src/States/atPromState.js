@@ -19,11 +19,11 @@ function AtProm() {
     {type: 'choice', msg: 4, delay: -1, duration: -1}
     ];
 
-  var count;
-  var DIALOGUE_DISPLAY_TIME = 4000;
+  var progress;
+  var DIALOGUE_DISPLAY_TIME = 2000;
 
   function init() {
-    count = 0;
+    progress = 0;
 
     choiceButton1 = null;
     choiceButton2 = null;
@@ -94,19 +94,20 @@ function AtProm() {
   }
 
   /**
-   * @todo comment me
+   * displayNext: void -> void
+   * function iterates through dialogueTree and checks 'type' tag in order to display friend/date dialogue or choice buttons.
    */
   function displayNext() {
 
-    // @todo check upper bound on `count`
-    if (count >= dialogueTree.length) {
+    // @todo check upper bound on `progress`
+    if (progress >= dialogueTree.length) {
       // @todo go to next state
     }
 
-    if (dialogueTree[count].type == 'choice') {
+    if (dialogueTree[progress].type == 'choice') {
 
       //checking for correct player choice dialogue buttons
-      switch(dialogueTree[count].msg) {
+      switch(dialogueTree[progress].msg) {
 
         case 0:
           key1 = 'choice1a';
@@ -150,13 +151,13 @@ function AtProm() {
       choiceButton2.inputEnabled = true;
       choiceButton2.events.onInputUp.add(onChoiceSelected, {selected: 2});
     }
-    else if (dialogueTree[count].type == 'date') {
-      dateDialogue = createDateDialogue(dialogueTree[count].msg);
+    else if (dialogueTree[progress].type == 'date') {
+      dateDialogue = createDateDialogue(dialogueTree[progress].msg);
       setTimeout(displayNext, DIALOGUE_DISPLAY_TIME);
       console.log('date');
     }
-    else if (dialogueTree[count].type == 'friend') {
-      friendDialogue = createFriendDialogue(dialogueTree[count].msg);
+    else if (dialogueTree[progress].type == 'friend') {
+      friendDialogue = createFriendDialogue(dialogueTree[progress].msg);
       setTimeout(displayNext, DIALOGUE_DISPLAY_TIME);
       console.log('friend');
     }
@@ -165,14 +166,15 @@ function AtProm() {
     }
 
     // Progress the dialogue tree
-    count++;
+    progress++;
   }
 
   /**
-   * @todo comment me
+   * onChoiceSelected: void -> void
+   * clears the screen of all buttons and/or dialogue, resets all to null, and then displays the next dialogue
    */
   function onChoiceSelected() {
-    // clear the screen
+
     if (dateDialogue) {
       dateDialogue.destroy();
     }
