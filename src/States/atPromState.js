@@ -33,29 +33,32 @@ function AtProm() {
 
   function preload() {
 
+    //background
+    game.load.image('background', 'assets/Backgrounds/AP_bkgrd.png');
+
     //player assets
-    game.load.image('choice1a', 'assets/AP_choice1a.jpg');
-    game.load.image('choice1b', 'assets/AP_choice1b.jpg');
-    game.load.image('choice2a', 'assets/AP_choice2a.jpg');
-    game.load.image('choice2b', 'assets/AP_choice2b.jpg');
-    game.load.image('choice3a', 'assets/AP_choice3a.jpg');
-    game.load.image('choice3b', 'assets/AP_choice3b.jpg');
-    game.load.image('choice4a', 'assets/AP_choice4a.jpg');
-    game.load.image('choice4b', 'assets/AP_choice4b.jpg');
-    game.load.image('choice5a', 'assets/AP_choice5a.jpg');
-    game.load.image('choice5b', 'assets/AP_choice5b.jpg');
+    game.load.image('choice1a', 'assets/AP_choice1a.png');
+    game.load.image('choice1b', 'assets/AP_choice1b.png');
+    game.load.image('choice2a', 'assets/AP_choice2a.png');
+    game.load.image('choice2b', 'assets/AP_choice2b.png');
+    game.load.image('choice3a', 'assets/AP_choice3a.png');
+    game.load.image('choice3b', 'assets/AP_choice3b.png');
+    game.load.image('choice4a', 'assets/AP_choice4a.png');
+    game.load.image('choice4b', 'assets/AP_choice4b.png');
+    game.load.image('choice5a', 'assets/AP_choice5a.png');
+    game.load.image('choice5b', 'assets/AP_choice5b.png');
 
     //date assets
-    game.load.image('date1', 'assets/AP_date1.jpg');
-    game.load.image('date2', 'assets/AP_date2.jpg');
-    game.load.image('date3', 'assets/AP_date3.jpg');
-    game.load.image('date4', 'assets/AP_date4.jpg');
-    game.load.image('date5', 'assets/AP_date5.jpg');
+    game.load.image('date1', 'assets/AP_date1.png');
+    game.load.image('date2', 'assets/AP_date2.png');
+    game.load.image('date3', 'assets/AP_date3.png');
+    game.load.image('date4', 'assets/AP_date4.png');
+    game.load.image('date5', 'assets/AP_date5.png');
 
     //friend assets
-    game.load.image('friend1', 'assets/AP_friend1.jpg');
-    game.load.image('friend2', 'assets/AP_friend2.jpg');
-    game.load.image('friend3', 'assets/AP_friend3.jpg');
+    game.load.image('friend1', 'assets/AP_friend1.png');
+    game.load.image('friend2', 'assets/AP_friend2.png');
+    game.load.image('friend3', 'assets/AP_friend3.png');
 
   }
 
@@ -65,7 +68,8 @@ function AtProm() {
 
     console.log('in create');
 
-    game.stage.backgroundColor = '#182d3b';
+    //game.stage.backgroundColor = 'background';
+    game.add.tileSprite(0, 0, 800, 600, 'background');
 
     displayNext();
   }
@@ -99,9 +103,8 @@ function AtProm() {
    */
   function displayNext() {
 
-    // @todo check upper bound on `progress`
     if (progress >= dialogueTree.length) {
-      // @todo go to next state
+     // game.state.start('tbd');
     }
 
     if (dialogueTree[progress].type == 'choice') {
@@ -207,6 +210,3 @@ function AtProm() {
       update: update
   }
 }
-
-game.state.add('at-prom', new AtProm());
-game.state.start('at-prom');
