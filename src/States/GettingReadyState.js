@@ -27,6 +27,9 @@ function GettingReady() {
 
   function preload() {
 
+    //background
+    game.load.image('background', 'assets/Backgrounds/getting-ready-bkgrd.png');
+
     //player assets
     game.load.image('choice1a', 'assets/getting-ready/GR_choice1a.png');
     game.load.image('choice1b', 'assets/getting-ready/GR_choice1b.png');
@@ -52,7 +55,7 @@ function GettingReady() {
 
     console.log('in create');
 
-    game.stage.backgroundColor = '#182d3b';
+    game.add.tileSprite(0, 0, 800, 600, 'background');
 
 
     game.add.sprite(game.world.centerX - 350, game.world.centerY - 200, 'friendPic');
