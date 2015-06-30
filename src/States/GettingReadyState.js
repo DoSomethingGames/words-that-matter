@@ -57,10 +57,6 @@ function GettingReady() {
 
     game.add.tileSprite(0, 0, 800, 600, 'background');
 
-
-    game.add.sprite(game.world.centerX - 350, game.world.centerY - 200, 'friendPic');
-    game.add.sprite(game.world.centerX + 150, game.world.centerY - 200, 'datePic');
-
     displayNext();
   }
 
@@ -99,6 +95,7 @@ function GettingReady() {
   **/
 
   function createDateDialogue(key) {
+    game.add.sprite(game.world.centerX + 150, game.world.centerY - 200, 'datePic');
     return game.add.sprite(game.world.centerX - 150, game.world.centerY - 250, key);
   }
 
@@ -108,6 +105,7 @@ function GettingReady() {
   **/
 
   function createFriendDialogue(key) {
+    game.add.sprite(game.world.centerX - 350, game.world.centerY - 200, 'friendPic');
     return game.add.sprite(game.world.centerX - 150, game.world.centerY - 250, key);
   }
 
