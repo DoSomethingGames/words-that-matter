@@ -207,6 +207,3 @@ function AtProm() {
       update: update
   }
 }
-
-game.state.add('at-prom', new AtProm());
-game.state.start('at-prom');
