@@ -1,9 +1,12 @@
 function AtProm() {
 
   // These are the actual sprites and buttons that will be created and destroyed as the dialogue progresses
-  var choiceButton1, choiceButton2, dateDialogue, friendDialogue;
+  var choiceButton1, choiceButton2, dateDialogue, friendDialogue, narrative;
   
   var dialogueTree = [
+    {type: 'narrative', msg: 'narrative1', delay: -1, duration: -1},
+    {type: 'narrative', msg: 'narrative2', delay: -1, duration: -1},
+    {type: 'narrative', msg: 'narrative3', delay: -1, duration: -1},
     {type: 'choice', msg: 0, delay: -1, duration: -1}, 
     {type: 'date', msg: 'date1', delay: -1, duration: -1},
     {type: 'choice', msg: 1, delay: -1, duration: -1}, 
@@ -35,6 +38,11 @@ function AtProm() {
 
     //background
     game.load.image('background', 'assets/Backgrounds/AP_bkgrd.png');
+
+    //narrative assets
+    game.load.image('narrative1', 'assets/at-prom/AP_narrative1.png');
+    game.load.image('narrative2', 'assets/at-prom/AP_narrative2.png');
+    game.load.image('narrative3', 'assets/at-prom/AP_narrative3.png');
 
     //player assets
     game.load.image('choice1a', 'assets/at-prom/AP_choice1a.png');
@@ -129,6 +137,15 @@ function AtProm() {
   }
 
   /**
+   * createNarrative: [asset key] -> void 
+   * adds narrative sprite corresponding to asset key to the screen 
+  **/
+
+  function createNarrative(key) {
+    return game.add.sprite(game.world.centerX - 350, game.world.centerY + 100, key);
+  }
+
+  /**
    * displayNext: void -> void
    * function iterates through dialogueTree and checks 'type' tag in order to display friend/date dialogue or choice buttons.
    */
@@ -144,6 +161,10 @@ function AtProm() {
     
     if (friendDialogue) {
       friendDialogue.destroy();
+    }
+
+    if (narrative) {
+      narrative.destory();
     }
 
     if (dialogueTree[progress].type == 'choice') {
@@ -203,6 +224,12 @@ function AtProm() {
       setTimeout(displayNext, DIALOGUE_DISPLAY_TIME);
       console.log('friend');
     }
+    else if (dialogueTree[progress].type == 'narrative') {
+      narrative = createNarrative(dialogueTree[progress].msg);
+      choiceButton2.inputEnabled = true;
+      choiceButton2.events.onInputUp.add(onChoiceSelected, {selected: 2});
+    }
+
     else {
       console.log('unable to match type');
     }
@@ -223,6 +250,10 @@ function AtProm() {
     
     if (friendDialogue) {
       friendDialogue.destroy();
+    }
+
+    if (narrative) {
+      narrative.destroy();
     }
 
     if (choiceButton1) {

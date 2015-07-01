@@ -45,7 +45,7 @@ function GettingReady() {
     game.load.image('friend1', 'assets/getting-ready/GR_friend1.png');
     game.load.image('friend2', 'assets/getting-ready/GR_friend2.png');
     game.load.image('friend3', 'assets/getting-ready/GR_friend3.png');
-    game.load.image('friend4', 'assets/getting-ready/GR_friend4.png');
+    //game.load.image('friend4', 'assets/getting-ready/GR_friend4.png');
 
   }
 
@@ -129,6 +129,8 @@ function GettingReady() {
     if (friendDialogue) {
       friendDialogue.destroy();
     }
+
+    console.log(progress);
 
     if (dialogueTree[progress].type == 'choice') {
 
@@ -221,6 +223,7 @@ function GettingReady() {
     friendDialogue = null;
     choiceButton1 = null;
     choiceButton2 = null;
+    narrative = null;
 
     // Display the next dialogue
     displayNext();
