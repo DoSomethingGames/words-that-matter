@@ -8,9 +8,9 @@ function GettingReady() {
     {type: 'date', msg: 'date1', delay: -1, duration: -1},
     {type: 'date', msg: 'date2', delay: -1, duration: -1},
     {type: 'friend', msg: 'friend2', delay: -1, duration: -1},
-    {type: 'choice', msg: 0, delay: -1, duration: -1}, 
+    {type: 'friend', msg: 'friend3', delay: -1, duration: -1},
     {type: 'date', msg: 'date3', delay: -1, duration: -1},
-    {type: 'choice', msg: 1, delay: -1, duration: -1},
+    {type: 'choice', msg: 0, delay: -1, duration: -1}, 
     ];
 
   var progress;
@@ -27,19 +27,25 @@ function GettingReady() {
 
   function preload() {
 
+    //background
+    game.load.image('background', 'assets/Backgrounds/getting-ready-bkgrd.png');
+
     //player assets
-    game.load.image('choice1a', 'assets/getting-ready/GR_choice1a.jpg');
-    game.load.image('choice1b', 'assets/getting-ready/GR_choice1b.jpg');
+    game.load.image('choice1a', 'assets/getting-ready/GR_choice1a.png');
+    game.load.image('choice1b', 'assets/getting-ready/GR_choice1b.png');
 
     //date assets
-    game.load.image('date1', 'assets/getting-ready/GR_date1.jpg');
-    game.load.image('date2', 'assets/getting-ready/GR_date2.jpg');
-    game.load.image('date3', 'assets/getting-ready/GR_date3.jpg');
+    game.load.image('datePic', 'assets/dateCrop.png');
+    game.load.image('date1', 'assets/getting-ready/GR_date1.png');
+    game.load.image('date2', 'assets/getting-ready/GR_date2.png');
+    game.load.image('date3', 'assets/getting-ready/GR_date3.png');
 
     //friend assets
-    game.load.image('friend1', 'assets/getting-ready/GR_friend1.jpg');
-    game.load.image('friend2', 'assets/getting-ready/GR_friend2.jpg');
-    game.load.image('friend3', 'assets/getting-ready/GR_friend3.jpg');
+    game.load.image('friendPic', 'assets/friendCrop.png');
+    game.load.image('friend1', 'assets/getting-ready/GR_friend1.png');
+    game.load.image('friend2', 'assets/getting-ready/GR_friend2.png');
+    game.load.image('friend3', 'assets/getting-ready/GR_friend3.png');
+    game.load.image('friend4', 'assets/getting-ready/GR_friend4.png');
 
   }
 
@@ -49,32 +55,58 @@ function GettingReady() {
 
     console.log('in create');
 
-    game.stage.backgroundColor = '#182d3b';
+    game.add.tileSprite(0, 0, 800, 600, 'background');
 
     displayNext();
   }
 
   function update() {}
 
+  /**
+   * createChoiceButton: [asset key] int int -> void
+   * adds a button to the current state at the given position, using the asset key as the image
+  **/
 
   function createChoiceButton(key, x, y) {
     return game.add.button(x, y, key, null, null, 2, 1, 0);
   }
 
+  /**
+   * createChoiceButton1: [asset key] -> void
+   * adds a button to the current state, using the asset key as the image
+  **/
+
   function createChoiceButton1(key) {
     return createChoiceButton(key, game.world.centerX + 50, game.world.centerY + 50);
   }
+
+  /**
+   * createChoiceButton2: [asset key] -> void
+   * adds a button to the current state, using the asset key as the image
+  **/
 
   function createChoiceButton2(key) {
     return createChoiceButton(key, game.world.centerX - 350, game.world.centerY + 50);
   }
 
+  /**
+   * createDateDialogue: [asset key] -> void
+   * adds a button to the current state, using the asset key as the image
+  **/
+
   function createDateDialogue(key) {
-    return game.add.sprite(game.world.centerX -350, game.world.centerY - 200, key);
+    game.add.sprite(game.world.centerX + 150, game.world.centerY - 200, 'datePic');
+    return game.add.sprite(game.world.centerX - 150, game.world.centerY - 250, key);
   }
 
+  /**
+   * createFriendDialogue: [asset key] -> void
+   * adds a button to the current state, using the asset key as the image
+  **/
+
   function createFriendDialogue(key) {
-    return game.add.sprite(game.world.centerX + 50, game.world.centerY - 200, key);
+    game.add.sprite(game.world.centerX - 350, game.world.centerY - 200, 'friendPic');
+    return game.add.sprite(game.world.centerX - 150, game.world.centerY - 250, key);
   }
 
   /**
@@ -84,7 +116,18 @@ function GettingReady() {
   function displayNext() {
 
     if (progress >= dialogueTree.length) {
-     // game.state.start('tbd');
+     
+      game.state.add('at-prom', new AtProm());
+      game.state.start('at-prom');
+
+    }
+
+    if (dateDialogue) {
+      dateDialogue.destroy();
+    }
+    
+    if (friendDialogue) {
+      friendDialogue.destroy();
     }
 
     if (dialogueTree[progress].type == 'choice') {
@@ -158,13 +201,13 @@ function GettingReady() {
    */
   function onChoiceSelected() {
 
-    if (dateDialogue) {
-      dateDialogue.destroy();
-    }
+    // if (dateDialogue) {
+    //   dateDialogue.destroy();
+    // }
     
-    if (friendDialogue) {
-      friendDialogue.destroy();
-    }
+    // if (friendDialogue) {
+    //   friendDialogue.destroy();
+    // }
 
     if (choiceButton1) {
       choiceButton1.destroy();
@@ -191,5 +234,5 @@ function GettingReady() {
   }
 }
 
-game.state.add('at-prom', new AtProm());
-game.state.start('at-prom');
+game.state.add('getting-ready', new GettingReady());
+game.state.start('getting-ready');
