@@ -6,10 +6,10 @@ function AtProm() {
   var dialogueTree = [
     {type: 'choice', msg: 0, delay: -1, duration: -1}, 
     {type: 'date', msg: 'date1', delay: -1, duration: -1},
+    {type: 'choice', msg: 1, delay: -1, duration: -1}, 
     {type: 'friend', msg: 'friend1', delay: -1, duration: -1},
-    {type: 'choice', msg: 1, delay: -1, duration: -1},
-    {type: 'date', msg: 'date2', delay: -1, duration: -1},
-    {type: 'friend', msg: 'friend2', delay: -1, duration: -1},
+    {type: 'friend', msg: 'friend2', delay: -1, duration: -1}, 
+    {type: 'date', msg: 'date2', delay: -1, duration: -1},  
     {type: 'date', msg: 'date3', delay: -1, duration: -1},
     {type: 'choice', msg: 2, delay: -1, duration: -1},
     {type: 'friend', msg: 'friend3', delay: -1, duration: -1},
@@ -33,29 +33,34 @@ function AtProm() {
 
   function preload() {
 
+    //background
+    game.load.image('background', 'assets/Backgrounds/AP_bkgrd.png');
+
     //player assets
-    game.load.image('choice1a', 'assets/AP_choice1a.jpg');
-    game.load.image('choice1b', 'assets/AP_choice1b.jpg');
-    game.load.image('choice2a', 'assets/AP_choice2a.jpg');
-    game.load.image('choice2b', 'assets/AP_choice2b.jpg');
-    game.load.image('choice3a', 'assets/AP_choice3a.jpg');
-    game.load.image('choice3b', 'assets/AP_choice3b.jpg');
-    game.load.image('choice4a', 'assets/AP_choice4a.jpg');
-    game.load.image('choice4b', 'assets/AP_choice4b.jpg');
-    game.load.image('choice5a', 'assets/AP_choice5a.jpg');
-    game.load.image('choice5b', 'assets/AP_choice5b.jpg');
+    game.load.image('choice1a', 'assets/at-prom/AP_choice1a.png');
+    game.load.image('choice1b', 'assets/at-prom/AP_choice1b.png');
+    game.load.image('choice2a', 'assets/at-prom/AP_choice2a.png');
+    game.load.image('choice2b', 'assets/at-prom/AP_choice2b.png');
+    game.load.image('choice3a', 'assets/at-prom/AP_choice3a.png');
+    game.load.image('choice3b', 'assets/at-prom/AP_choice3b.png');
+    game.load.image('choice4a', 'assets/at-prom/AP_choice4a.png');
+    game.load.image('choice4b', 'assets/at-prom/AP_choice4b.png');
+    game.load.image('choice5a', 'assets/at-prom/AP_choice5a.png');
+    game.load.image('choice5b', 'assets/at-prom/AP_choice5b.png');
 
     //date assets
-    game.load.image('date1', 'assets/AP_date1.jpg');
-    game.load.image('date2', 'assets/AP_date2.jpg');
-    game.load.image('date3', 'assets/AP_date3.jpg');
-    game.load.image('date4', 'assets/AP_date4.jpg');
-    game.load.image('date5', 'assets/AP_date5.jpg');
+    game.load.image('datePic', 'assets/dateCrop.png');
+    game.load.image('date1', 'assets/at-prom/AP_date1.png');
+    game.load.image('date2', 'assets/at-prom/AP_date2.png');
+    game.load.image('date3', 'assets/at-prom/AP_date3.png');
+    game.load.image('date4', 'assets/at-prom/AP_date4.png');
+    game.load.image('date5', 'assets/at-prom/AP_date5.png');
 
     //friend assets
-    game.load.image('friend1', 'assets/AP_friend1.jpg');
-    game.load.image('friend2', 'assets/AP_friend2.jpg');
-    game.load.image('friend3', 'assets/AP_friend3.jpg');
+    game.load.image('friendPic', 'assets/friendCrop.png');
+    game.load.image('friend1', 'assets/at-prom/AP_friend1.png');
+    game.load.image('friend2', 'assets/at-prom/AP_friend2.png');
+    game.load.image('friend3', 'assets/at-prom/AP_friend3.png');
 
   }
 
@@ -65,32 +70,62 @@ function AtProm() {
 
     console.log('in create');
 
-    game.stage.backgroundColor = '#182d3b';
+    //game.stage.backgroundColor = 'background';
+    game.add.tileSprite(0, 0, 800, 600, 'background');
+
+    //game.add.sprite(game.world.centerX - 350, game.world.centerY - 200, 'friendPic');
+    //game.add.sprite(game.world.centerX + 150, game.world.centerY - 200, 'datePic');
 
     displayNext();
   }
 
   function update() {}
 
+ /**
+   * createChoiceButton: [asset key] int int -> void
+   * adds a button to the current state at the given position, using the asset key as the image
+  **/
 
   function createChoiceButton(key, x, y) {
     return game.add.button(x, y, key, null, null, 2, 1, 0);
   }
 
+  /**
+   * createChoiceButton1: [asset key] -> void
+   * adds a button to the current state, using the asset key as the image
+  **/
+
   function createChoiceButton1(key) {
     return createChoiceButton(key, game.world.centerX + 50, game.world.centerY + 50);
   }
+
+  /**
+   * createChoiceButton2: [asset key] -> void
+   * adds a button to the current state, using the asset key as the image
+  **/
 
   function createChoiceButton2(key) {
     return createChoiceButton(key, game.world.centerX - 350, game.world.centerY + 50);
   }
 
+  /**
+   * createDateDialogue: [asset key] -> void
+   * adds a button to the current state, using the asset key as the image
+  **/
+
   function createDateDialogue(key) {
-    return game.add.sprite(game.world.centerX -350, game.world.centerY - 200, key);
+    game.add.sprite(game.world.centerX + 150, game.world.centerY - 200, 'datePic');
+    return game.add.sprite(game.world.centerX - 150, game.world.centerY - 250, key);
   }
 
+  /**
+   * createFriendDialogue: [asset key] -> void
+   * adds a button to the current state, using the asset key as the image
+  **/
+
   function createFriendDialogue(key) {
-    return game.add.sprite(game.world.centerX + 50, game.world.centerY - 200, key);
+    game.add.sprite(game.world.centerX - 350, game.world.centerY - 200, 'friendPic');
+    return game.add.sprite(game.world.centerX - 150, game.world.centerY - 250, key);
   }
 
   /**
@@ -99,9 +134,16 @@ function AtProm() {
    */
   function displayNext() {
 
-    // @todo check upper bound on `progress`
     if (progress >= dialogueTree.length) {
-      // @todo go to next state
+     // game.state.start('tbd');
+    }
+
+    if (dateDialogue) {
+      dateDialogue.destroy();
+    }
+    
+    if (friendDialogue) {
+      friendDialogue.destroy();
     }
 
     if (dialogueTree[progress].type == 'choice') {
@@ -207,6 +249,3 @@ function AtProm() {
       update: update
   }
 }
-
-game.state.add('at-prom', new AtProm());
-game.state.start('at-prom');
