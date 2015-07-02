@@ -115,19 +115,23 @@ function GettingReady() {
    */
   function displayNext() {
 
-    if (progress >= dialogueTree.length) {
-     
-      game.state.add('at-prom', new AtProm());
-      game.state.start('at-prom');
-
-    }
-
     if (dateDialogue) {
       dateDialogue.destroy();
     }
     
     if (friendDialogue) {
       friendDialogue.destroy();
+    }
+
+    if (progress >= dialogueTree.length) {  //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ ISSUE!! @@@@@@@@@@@ -> progressing after loop
+
+      console.log('true');
+     
+      game.state.add('at-prom', new AtProm());
+      game.state.start('at-prom');
+      game.state.shutdown('getting-ready');
+      //progress = 0;
+
     }
 
     console.log(progress);
