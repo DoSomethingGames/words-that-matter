@@ -7,6 +7,7 @@ function AtProm() {
     {type: 'narrative', msg: 'narrative1', delay: -1, duration: -1},
     {type: 'narrative', msg: 'narrative2', delay: -1, duration: -1},
     {type: 'narrative', msg: 'narrative3', delay: -1, duration: -1},
+    {type: 'narrative', msg: 'narrative4', delay: -1, duration: -1},
     {type: 'choice', msg: 0, delay: -1, duration: -1}, 
     {type: 'date', msg: 'date1', delay: -1, duration: -1},
     {type: 'choice', msg: 1, delay: -1, duration: -1}, 
@@ -43,6 +44,7 @@ function AtProm() {
     game.load.image('narrative1', 'assets/at-prom/AP_narrative1.png');
     game.load.image('narrative2', 'assets/at-prom/AP_narrative2.png');
     game.load.image('narrative3', 'assets/at-prom/AP_narrative3.png');
+    game.load.image('narrative4', 'assets/at-prom/AP_narrative4.png');
 
     //player assets
     game.load.image('choice1a', 'assets/at-prom/AP_choice1a.png');
@@ -226,8 +228,8 @@ function AtProm() {
     }
     else if (dialogueTree[progress].type == 'narrative') {
       narrative = createNarrative(dialogueTree[progress].msg);
-      choiceButton2.inputEnabled = true;
-      choiceButton2.events.onInputUp.add(onChoiceSelected, {selected: 2});
+      narrative.inputEnabled = true;
+      narrative.events.onInputUp.add(onChoiceSelected, {selected: 3});
     }
 
     else {
@@ -268,6 +270,7 @@ function AtProm() {
     friendDialogue = null;
     choiceButton1 = null;
     choiceButton2 = null;
+    narrative = null;
 
     // Display the next dialogue
     displayNext();
