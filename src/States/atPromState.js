@@ -25,6 +25,7 @@ function AtProm() {
 
   var progress;
   var DIALOGUE_DISPLAY_TIME = 2000;
+  var NARRATIVE_DISPLAY_TIME = 3000;
 
   function init() {
     progress = 0;
@@ -166,7 +167,7 @@ function AtProm() {
     }
 
     if (narrative) {
-      narrative.destory();
+      narrative.destroy();
     }
 
     if (dialogueTree[progress].type == 'choice') {
@@ -228,8 +229,8 @@ function AtProm() {
     }
     else if (dialogueTree[progress].type == 'narrative') {
       narrative = createNarrative(dialogueTree[progress].msg);
-      narrative.inputEnabled = true;
-      narrative.events.onInputUp.add(onChoiceSelected, {selected: 3});
+      setTimeout(displayNext, NARRATIVE_DISPLAY_TIME);
+      console.log('narrative');
     }
 
     else {
