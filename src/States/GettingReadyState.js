@@ -14,6 +14,7 @@ function GettingReady() {
     ];
 
   var progress;
+  var background;
   var DIALOGUE_DISPLAY_TIME = 2000;
 
   function init() {
@@ -52,12 +53,31 @@ function GettingReady() {
   console.log('loaded assets');
 
   function create() {
+    var bg;
+    var properties;
+    var fadeInDuration;
+    var ease;
+    var autoStart;
+    var delay;
+    var repeat;
+    var yoyo;
 
     console.log('in create');
 
-    game.add.tileSprite(0, 0, 800, 600, 'background');
+    background = game.add.tileSprite(0, 0, 800, 600, 'background');
 
-    displayNext();
+    background.alpha = 0;
+
+    properties = {alpha: 1};
+    fadeInDuration = 2000;
+    ease = Phaser.Easing.Linear.None;
+    autoStart = true;
+    delay = 0;
+    repeat = 0;
+    yoyo = false;
+    game.add.tween(background).to(properties, fadeInDuration, ease, autoStart, delay, repeat, yoyo);
+
+    setTimeout(displayNext, fadeInDuration);
   }
 
   function update() {}
@@ -124,14 +144,8 @@ function GettingReady() {
     }
 
     if (progress >= dialogueTree.length) {  //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ ISSUE!! @@@@@@@@@@@ -> progressing after loop
-
-      console.log('true');
-     
-      game.state.add('at-prom', new AtProm());
-      game.state.start('at-prom');
-      game.state.shutdown('getting-ready');
-      //progress = 0;
-
+      transitionToNextState();
+      return;
     }
 
     console.log(progress);
@@ -231,6 +245,30 @@ function GettingReady() {
 
     // Display the next dialogue
     displayNext();
+  }
+
+  /**
+   * Begin transition to the next state with a fade out.
+   */
+  function transitionToNextState() {
+    var properties = {alpha: 0};
+    var fadeOutDuration = 2000;
+    var ease = Phaser.Easing.Linear.None;
+    var autoStart = true;
+    var delay = 2000;
+    var repeat = false;
+    var yoyo = false;
+
+    game.add.tween(background).to(properties, fadeOutDuration, ease, autoStart, delay, repeat, yoyo);
+    setTimeout(startNextState, fadeOutDuration + delay);
+  }
+
+  /**
+   * Add and start next state. Starting a new state automatically shuts down the current one.
+   */
+  function startNextState() {
+    game.state.add('at-prom', new AtProm());
+    game.state.start('at-prom');
   }
 
   return {
