@@ -15,6 +15,9 @@ function AtDanceGame() {
 	var item1;
 	var item2;
 	var item3;
+	var itemDialogue1;
+	var itemDialogue2;
+	var itemDialogue3;
 
 
 	function init() {
@@ -61,31 +64,29 @@ function AtDanceGame() {
 
 		//draws table
 		player = game.add.sprite(createPlayer.x, createPlayer.y, 'playerImg');
-		player.enableBody = true;
+		game.physics.arcade.enable(player);
 
 
 		item1 = game.add.sprite(100, 100, 'itemImg1');
-		item1.enableBody = true;
+		game.physics.arcade.enable(item1);
 		item2 = game.add.sprite(200, 200, 'itemImg2');
-		item2.enableBody = true;
+		game.physics.arcade.enable(item2);
 		item3 = game.add.sprite(300, 300, 'itemImg3');
-		item3.enableBody = true;
+		game.physics.arcade.enable(item3);
 
 	}
 
 	function update() {
+
+		game.physics.arcade.collide(player, item1, touchItem1, null, this);
+		game.physics.arcade.collide(player, item2, touchItem2, null, this);
+		game.physics.arcade.collide(player, item3, touchItem3, null, this);
+
+		game.physics.arcade.overlap(player, item1, touchItem1, null, this);
+		game.physics.arcade.overlap(player, item2, touchItem2, null, this);
+		game.physics.arcade.overlap(player, item3, touchItem3, null, this);
+
 		updatePlayer();
-
-		if (game.physics.arcade.collide(player, item1)) {
-			touchItem1();
-		}
-		else if (game.physics.arcade.collide(player, item2)) {
-			touchItem2();
-		}
-		else if (game.physics.arcade.collide(player, item3)) {
-			touchItem3();
-		}
-
 
 	}
 
@@ -124,7 +125,9 @@ function AtDanceGame() {
 	function touchItem1() {
 
 		item1.kill();
-		game.add.sprite(game.width/2, game.height/4, 'itemDialogue1');
+		game.paused = true;
+		itemDialogue1 = game.add.sprite(game.width/2, game.height/4, 'itemDialogue1');
+		setTimeout(killDialogue1, 2000)
 		console.log('item1');
 
 	}
@@ -132,17 +135,36 @@ function AtDanceGame() {
 	function touchItem2() {
 
 		item2.kill();
-		game.add.sprite(game.width/2, game.height/4, 'itemDialogue2');
-		console.log('item3');
+		game.paused = true;
+		itemDialogue2 = game.add.sprite(game.width/2, game.height/4, 'itemDialogue2');
+		setTimeout(killDialogue2, 2000)
+		console.log('item2');
 		
 	}
 
 	function touchItem3() {
 
 		item3.kill();
-		game.add.sprite(game.width/2, game.height/4, 'itemDialogue3');
+		game.paused = true;
+		itemDialogue3 = game.add.sprite(game.width/2, game.height/4, 'itemDialogue3');
+		setTimeout(killDialogue3, 2000)
 		console.log('item3');
 		
+	}
+
+	function killDialogue1() {
+		game.paused = false;
+		itemDialogue1.kill();
+	}
+
+	function killDialogue2() {
+		game.paused = false;
+		itemDialogue2.kill();
+	}
+
+	function killDialogue3() {
+		game.paused = false;
+		itemDialogue3.kill();
 	}
 
 	return {
