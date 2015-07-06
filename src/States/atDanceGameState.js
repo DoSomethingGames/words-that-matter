@@ -15,13 +15,10 @@ function AtDanceGame() {
 	var player;
 
 	//items
-	var pickup;
 	var item1;
 	var item2;
 	var item3;
-	var itemDialogue1;
-	var itemDialogue2;
-	var itemDialogue3;
+	var dialogue;
 
 	function init() {
 
@@ -108,27 +105,14 @@ function AtDanceGame() {
 	}
 
 	function update() {
-		collide(player, item1, touchItem1, null, this);
-		collide(player, item2, touchItem2, null, this);
-		collide(player, item3, touchItem3, null, this);
+		//item disappears when touched and brings up dialogue
+		game.physics.arcade.collide(player, item1, touchItem, null, {itemPickedUp: item1, dialogueName: 'itemDialogue1'});
+		game.physics.arcade.collide(player, item2, touchItem, null, {itemPickedUp: item2, dialogueName: 'itemDialogue2'});
+		game.physics.arcade.collide(player, item3, touchItem, null, {itemPickedUp: item3, dialogueName: 'itemDialogue3'});
 
-		if (game.physics.arcade.collide(player, item1)) {
-			touchItem1();
-		}
-		else if (game.physics.arcade.collide(player, item2)) {
-			touchItem2();
-		}
-		else if (game.physics.arcade.collide(player, item3)) {
-			touchItem3();
-		}
-
-		game.physics.arcade.collide(player, item1, touchItem1, null, this);
-		game.physics.arcade.collide(player, item2, touchItem2, null, this);
-		game.physics.arcade.collide(player, item3, touchItem3, null, this);
-
-		game.physics.arcade.overlap(player, item1, touchItem1, null, this);
-		game.physics.arcade.overlap(player, item2, touchItem2, null, this);
-		game.physics.arcade.overlap(player, item3, touchItem3, null, this);
+		game.physics.arcade.overlap(player, item1, touchItem, null, {itemPickedUp: item1, dialogueName: 'itemDialogue1'});
+		game.physics.arcade.overlap(player, item2, touchItem, null, {itemPickedUp: item2, dialogueName: 'itemDialogue2'});
+		game.physics.arcade.overlap(player, item3, touchItem, null, {itemPickedUp: item3, dialogueName: 'itemDialogue3'});
 
 		//checks table collisions
 		game.physics.arcade.collide(player, tables, tableCallback);
@@ -193,49 +177,17 @@ function AtDanceGame() {
 
 	}
 
-	function touchItem1() {
-
-		item1.kill();
+	function touchItem() {
+		this.itemPickedUp.kill();
 		game.paused = true;
-		itemDialogue1 = game.add.sprite(game.width/2, game.height/4, 'itemDialogue1');
-		setTimeout(killDialogue1, 2000)
-		console.log('item1');
-
+		dialogue = game.add.sprite(game.width/2, game.height/4, this.dialogueName);
+		setTimeout(killDialogue, 2000);
 	}
 
-	function touchItem2() {
-
-		item2.kill();
-		game.paused = true;
-		itemDialogue2 = game.add.sprite(game.width/2, game.height/4, 'itemDialogue2');
-		setTimeout(killDialogue2, 2000)
-		console.log('item2');
-		
-	}
-
-	function touchItem3() {
-
-		item3.kill();
-		game.paused = true;
-		itemDialogue3 = game.add.sprite(game.width/2, game.height/4, 'itemDialogue3');
-		setTimeout(killDialogue3, 2000)
-		console.log('item3');
-		
-	}
-
-	function killDialogue1() {
+	function killDialogue() {
 		game.paused = false;
-		itemDialogue1.kill();
-	}
-
-	function killDialogue2() {
-		game.paused = false;
-		itemDialogue2.kill();
-	}
-
-	function killDialogue3() {
-		game.paused = false;
-		itemDialogue3.kill();
+		dialogue.kill();
+		dialogue = null;
 	}
 
 	return {
