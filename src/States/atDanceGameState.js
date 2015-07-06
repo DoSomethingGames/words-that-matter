@@ -7,6 +7,10 @@ function AtDanceGame() {
 	var tableCount;
 	var tables;
 
+	//enemies
+	var enemyCount;
+	var enemies;
+
 	//player
 	var player;
 
@@ -26,7 +30,11 @@ function AtDanceGame() {
 
 		//table
 		tables = null;
-		tableCount = 1;
+		tableCount = 5;
+
+		//enemycouples
+		enemies = null;
+		enemyCount = 5;
 
 	}
 
@@ -58,25 +66,35 @@ function AtDanceGame() {
 		tables.enableBody = true;
 
 		for (var i = 0; i < tableCount; i ++) {
-			table = tables.create(game.rnd.realInRange(0, BOARD_WIDTH), game.rnd.realInRange(0, BOARD_HEIGHT-25), 'tableImg');
+			var table = tables.create(game.rnd.realInRange(0, BOARD_WIDTH), game.rnd.realInRange(0, BOARD_HEIGHT-25), 'tableImg');
 			table.body.collideWorldBounds = true;
 			table.body.immovable = true;
 		}
 
-<<<<<<< HEAD
+		//enemies
+		enemies = game.add.group();
+		enemies.name = 'enemies';
+		enemies.enableBody = true;
+
+		for (var i = 0; i < enemyCount; i++) {
+			var couple = enemies.create(game.rnd.realInRange(0, BOARD_WIDTH), game.rnd.realInRange(0, BOARD_HEIGHT-25), 'enemyImg');
+			couple.body.collideWorldBounds = true;
+			couple.body.allowGravity = false;
+			couple.body.bounce.setTo(1,1);
+			couple.body.velocity.setTo(200);
+		}
+
 		//draws player
 		player = game.add.sprite(10, BOARD_HEIGHT/2 - 12.5, 'playerImg');
 		player.name = 'player';
-		game.physics.arcade.enable(player, Phaser.Physics.ARCADE);
+		game.physics.arcade.enable(player);
 		player.body.allowGravity = false;
 		player.body.collideWorldBounds = true;
 		player.body.velocity = 10;
-=======
+
 		//draws table
 		player = game.add.sprite(createPlayer.x, createPlayer.y, 'playerImg');
 		game.physics.arcade.enable(player);
-
->>>>>>> collsions, dialogue popups, all work, just need assets
 
 		item1 = game.add.sprite(100, 100, 'itemImg1');
 		game.physics.arcade.enable(item1);
@@ -85,10 +103,11 @@ function AtDanceGame() {
 		item3 = game.add.sprite(300, 300, 'itemImg3');
 		game.physics.arcade.enable(item3);
 
+		player.body.bounce.set(5);
+		player.body.velocity = 3;
 	}
 
 	function update() {
-<<<<<<< HEAD
 		collide(player, item1, touchItem1, null, this);
 		collide(player, item2, touchItem2, null, this);
 		collide(player, item3, touchItem3, null, this);
@@ -102,7 +121,6 @@ function AtDanceGame() {
 		else if (game.physics.arcade.collide(player, item3)) {
 			touchItem3();
 		}
-=======
 
 		game.physics.arcade.collide(player, item1, touchItem1, null, this);
 		game.physics.arcade.collide(player, item2, touchItem2, null, this);
@@ -112,18 +130,53 @@ function AtDanceGame() {
 		game.physics.arcade.overlap(player, item2, touchItem2, null, this);
 		game.physics.arcade.overlap(player, item3, touchItem3, null, this);
 
-		updatePlayer();
+		//checks table collisions
+		game.physics.arcade.collide(player, tables, tableCallback);
+		game.physics.arcade.overlap(player, tables, tableCallback);
 
->>>>>>> collsions, dialogue popups, all work, just need assets
+		//checks enemy collisions
+		game.physics.arcade.collide(player, enemies, enemyCallback);
+		game.physics.arcade.overlap(player, enemies, enemyCallback);
+		game.physics.arcade.collide(enemies, tables);
+		game.physics.arcade.overlap(enemies, tables);
+
+		//updates enemy movement
+		updateEnemies();
+
+		//updates player movement
+		updatePlayer();
 	}
 
 	function shutdown() {
 		player.destroy();
+		tables.destroy();
+		enemies.destroy();
+	}
+
+	function tableCallback() {
+		game.paused = true;
+		//DIALOGUE HAPPENS HERE
+		//game.paused = false;
+	}
+
+	function enemyCallback() {
+		game.paused = true;
+		//DIALOGUE HAPPENS HERE
+		//game.paused = false;		
+	}
+
+	function updateEnemies() {
+		enemies.forEach(function(couple) {
+			couple.angle+=5;
+		}, this);
 	}
 
 	function updatePlayer() {
 
 		//mouse following
+		// player.rotation = game.physics.arcade.angleToPointer(player);
+		// game.physics.arcade.moveToPointer(player);
+
 		var yDistance = game.input.mousePointer.y - player.y;
 		var xDistance = game.input.mousePointer.x - player.x;
 		if (Math.sqrt(yDistance*yDistance +  xDistance*xDistance) < player.body.velocity) {
