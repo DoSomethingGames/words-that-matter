@@ -39,9 +39,9 @@ function AtDanceGame() {
 		game.load.image('itemImg3', 'assets/ADG_player.png');
 
 		//item dialogue
-		game.load.image('itemDialogue1', '');
-		game.load.image('itemDialogue2', '');
-		game.load.image('itemDialogue3', '');
+		game.load.image('itemDialogue1', 'assets/ADG_couple.png');
+		game.load.image('itemDialogue2', 'assets/ADG_couple.png');
+		game.load.image('itemDialogue3', 'assets/ADG_couple.png');
 
 
 	}
@@ -51,7 +51,7 @@ function AtDanceGame() {
 	function create() {
 
 		game.physics.startSystem(Phaser.Physics.ARCADE);
-		player.enableBody = true;
+		
 
 		//draws tables
 		for (var i = 0; i < tableCount; i ++) {
@@ -61,23 +61,30 @@ function AtDanceGame() {
 
 		//draws table
 		player = game.add.sprite(createPlayer.x, createPlayer.y, 'playerImg');
+		player.enableBody = true;
+
 
 		item1 = game.add.sprite(100, 100, 'itemImg1');
 		item1.enableBody = true;
-		item2 = game.add.sprite(100, 100, 'itemImg2');
+		item2 = game.add.sprite(200, 200, 'itemImg2');
 		item2.enableBody = true;
-		item3 = game.add.sprite(100, 100, 'itemImg3');
+		item3 = game.add.sprite(300, 300, 'itemImg3');
 		item3.enableBody = true;
-
 
 	}
 
 	function update() {
 		updatePlayer();
 
-		collide(player, item1, touchItem1, null, this);
-		collide(player, item2, touchItem2, null, this);
-		collide(player, item3, touchItem3, null, this);
+		if (game.physics.arcade.collide(player, item1)) {
+			touchItem1();
+		}
+		else if (game.physics.arcade.collide(player, item2)) {
+			touchItem2();
+		}
+		else if (game.physics.arcade.collide(player, item3)) {
+			touchItem3();
+		}
 
 
 	}
@@ -118,6 +125,7 @@ function AtDanceGame() {
 
 		item1.kill();
 		game.add.sprite(game.width/2, game.height/4, 'itemDialogue1');
+		console.log('item1');
 
 	}
 
@@ -125,6 +133,7 @@ function AtDanceGame() {
 
 		item2.kill();
 		game.add.sprite(game.width/2, game.height/4, 'itemDialogue2');
+		console.log('item3');
 		
 	}
 
@@ -132,6 +141,7 @@ function AtDanceGame() {
 
 		item3.kill();
 		game.add.sprite(game.width/2, game.height/4, 'itemDialogue3');
+		console.log('item3');
 		
 	}
 
