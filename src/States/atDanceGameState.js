@@ -10,6 +10,10 @@ function AtDanceGame() {
 	//player
 	var player;
 
+	//items
+	var pickup;
+	var items;
+
 
 	function init() {
 
@@ -27,12 +31,20 @@ function AtDanceGame() {
 		game.load.image('tableImg', 'assets/ADG_table.png');
 		game.load.image('enemyImg', 'assets/ADG_couple.png')
 		game.load.image('playerImg', 'assets/ADG_player.png');
+		game.load.image('pickupImg', 'assets/ADG_player.png');
+
+		//item dialogue
+		game.load.image('itemDialogue1', '');
 
 	}
 
 	console.log("loaded assets");
 
 	function create() {
+
+		game.physics.startSystem(Phaser.Physics.ARCADE);
+		player.enableBody = true;
+
 		//draws tables
 		for (var i = 0; i < tableCount; i ++) {
 			tableArray.push(new createTable());
@@ -42,10 +54,17 @@ function AtDanceGame() {
 		//draws table
 		player = game.add.sprite(createPlayer.x, createPlayer.y, 'playerImg');
 
+		items = game.group.add();
+		items.enableBody = true;
+		pickup = items.create(100, 100, 'pickupImg');
+		game.physics.arcade.collide(player, items);
+
 	}
 
 	function update() {
 		updatePlayer();
+		game.physics.arcade.collide(player, items);
+		game.physics.arcade.overlap(player, items, touchItem, null, this);
 
 
 	}
@@ -79,6 +98,14 @@ function AtDanceGame() {
 			player.y += Math.sin(directionAngle) * speed;
 			player.angle = directionAngle * 180 / Math.PI;
 		}
+
+	}
+
+	function touchItem(player, item) {
+
+		item.kill();
+
+
 
 	}
 
