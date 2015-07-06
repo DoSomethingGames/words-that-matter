@@ -12,7 +12,9 @@ function AtDanceGame() {
 
 	//items
 	var pickup;
-	var items;
+	var item1;
+	var item2;
+	var item3;
 
 
 	function init() {
@@ -31,10 +33,16 @@ function AtDanceGame() {
 		game.load.image('tableImg', 'assets/ADG_table.png');
 		game.load.image('enemyImg', 'assets/ADG_couple.png')
 		game.load.image('playerImg', 'assets/ADG_player.png');
-		game.load.image('pickupImg', 'assets/ADG_player.png');
+
+		game.load.image('itemImg1', 'assets/ADG_player.png');
+		game.load.image('itemImg2', 'assets/ADG_player.png');
+		game.load.image('itemImg3', 'assets/ADG_player.png');
 
 		//item dialogue
 		game.load.image('itemDialogue1', '');
+		game.load.image('itemDialogue2', '');
+		game.load.image('itemDialogue3', '');
+
 
 	}
 
@@ -54,17 +62,22 @@ function AtDanceGame() {
 		//draws table
 		player = game.add.sprite(createPlayer.x, createPlayer.y, 'playerImg');
 
-		items = game.group.add();
-		items.enableBody = true;
-		pickup = items.create(100, 100, 'pickupImg');
-		game.physics.arcade.collide(player, items);
+		item1 = game.add.sprite(100, 100, 'itemImg1');
+		item1.enableBody = true;
+		item2 = game.add.sprite(100, 100, 'itemImg2');
+		item2.enableBody = true;
+		item3 = game.add.sprite(100, 100, 'itemImg3');
+		item3.enableBody = true;
+
 
 	}
 
 	function update() {
 		updatePlayer();
-		game.physics.arcade.collide(player, items);
-		game.physics.arcade.overlap(player, items, touchItem, null, this);
+
+		collide(player, item1, touchItem1, null, this);
+		collide(player, item2, touchItem2, null, this);
+		collide(player, item3, touchItem3, null, this);
 
 
 	}
@@ -101,12 +114,25 @@ function AtDanceGame() {
 
 	}
 
-	function touchItem(player, item) {
+	function touchItem1() {
 
-		item.kill();
+		item1.kill();
+		game.add.sprite(game.width/2, game.height/4, 'itemDialogue1');
 
+	}
 
+	function touchItem2() {
 
+		item2.kill();
+		game.add.sprite(game.width/2, game.height/4, 'itemDialogue2');
+		
+	}
+
+	function touchItem3() {
+
+		item3.kill();
+		game.add.sprite(game.width/2, game.height/4, 'itemDialogue3');
+		
 	}
 
 	return {
