@@ -26,7 +26,7 @@ function AtDanceGame() {
 
 		//table
 		tables = null;
-		tableCount = 5;
+		tableCount = 6;
 
 		//enemycouples
 		enemies = null;
@@ -56,11 +56,18 @@ function AtDanceGame() {
 		tables.name = 'tables';
 		tables.enableBody = true;
 
-		//randomly generating tables
+		//generating tables
+		var tableX = 100;
+		var tableY = 100;
 		for (var i = 0; i < tableCount; i ++) {
-			var table = tables.create(game.rnd.realInRange(0, BOARD_WIDTH), game.rnd.realInRange(0, BOARD_HEIGHT-25), 'tableImg');
+			if (i == 3) {
+				tableY = 400;
+				tableX = 100;
+			}
+			var table = tables.create(tableX, tableY, 'tableImg');
 			table.body.collideWorldBounds = true;
 			table.body.immovable = true;
+			tableX += 225;
 		}
 
 		//enemy group and random generation
@@ -77,9 +84,9 @@ function AtDanceGame() {
 		}
 
 		//generating items
-		item1 = game.add.sprite(100, 100, 'itemImg1');
+		item1 = game.add.sprite(250, 100, 'itemImg1');
 		game.physics.arcade.enable(item1);
-		item2 = game.add.sprite(200, 200, 'itemImg2');
+		item2 = game.add.sprite(550, 200, 'itemImg2');
 		game.physics.arcade.enable(item2);
 		item3 = game.add.sprite(300, 300, 'itemImg3');
 		game.physics.arcade.enable(item3);
