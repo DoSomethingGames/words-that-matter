@@ -14,8 +14,13 @@ function AtDanceGame() {
 	//player
 	var player;
 
-	function init() {
+	//items
+	var item1;
+	var item2;
+	var item3;
+	var dialogue;
 
+	function init() {
 		BOARD_HEIGHT = 600;
 		BOARD_WIDTH = 800;
 
@@ -26,20 +31,24 @@ function AtDanceGame() {
 		//enemycouples
 		enemies = null;
 		enemyCount = 5;
-
 	}
 
 	function preload() {
-
 		game.load.image('tableImg', 'assets/ADG_table.png');
 		game.load.image('enemyImg', 'assets/ADG_couple.png')
 		game.load.image('playerImg', 'assets/ADG_player.png');
 
+		game.load.image('itemImg1', 'assets/ADG_player.png');
+		game.load.image('itemImg2', 'assets/ADG_player.png');
+		game.load.image('itemImg3', 'assets/ADG_player.png');
+
+		//item dialogue
+		game.load.image('itemDialogue1', 'assets/ADG_couple.png');
+		game.load.image('itemDialogue2', 'assets/ADG_couple.png');
+		game.load.image('itemDialogue3', 'assets/ADG_couple.png');
 	}
 
 	function create() {
-
-		//enables Physics
 		game.physics.startSystem(Phaser.Physics.ARCADE);
 
 		//tables
@@ -47,13 +56,14 @@ function AtDanceGame() {
 		tables.name = 'tables';
 		tables.enableBody = true;
 
+		//randomly generating tables
 		for (var i = 0; i < tableCount; i ++) {
 			var table = tables.create(game.rnd.realInRange(0, BOARD_WIDTH), game.rnd.realInRange(0, BOARD_HEIGHT-25), 'tableImg');
 			table.body.collideWorldBounds = true;
 			table.body.immovable = true;
 		}
 
-		//enemies
+		//enemy group and random generation
 		enemies = game.add.group();
 		enemies.name = 'enemies';
 		enemies.enableBody = true;
@@ -66,6 +76,14 @@ function AtDanceGame() {
 			couple.body.velocity.setTo(200);
 		}
 
+		//generating items
+		item1 = game.add.sprite(100, 100, 'itemImg1');
+		game.physics.arcade.enable(item1);
+		item2 = game.add.sprite(200, 200, 'itemImg2');
+		game.physics.arcade.enable(item2);
+		item3 = game.add.sprite(300, 300, 'itemImg3');
+		game.physics.arcade.enable(item3);
+
 		//draws player
 		player = game.add.sprite(10, BOARD_HEIGHT/2 - 12.5, 'playerImg');
 		player.name = 'player';
@@ -74,10 +92,17 @@ function AtDanceGame() {
 		player.body.collideWorldBounds = true;
 		player.body.bounce.set(5);
 		player.body.velocity = 3;
-
 	}
 
 	function update() {
+		//item disappears when touched and brings up dialogue
+		game.physics.arcade.collide(player, item1, touchItem, null, {itemPickedUp: item1, dialogueName: 'itemDialogue1'});
+		game.physics.arcade.collide(player, item2, touchItem, null, {itemPickedUp: item2, dialogueName: 'itemDialogue2'});
+		game.physics.arcade.collide(player, item3, touchItem, null, {itemPickedUp: item3, dialogueName: 'itemDialogue3'});
+
+		game.physics.arcade.overlap(player, item1, touchItem, null, {itemPickedUp: item1, dialogueName: 'itemDialogue1'});
+		game.physics.arcade.overlap(player, item2, touchItem, null, {itemPickedUp: item2, dialogueName: 'itemDialogue2'});
+		game.physics.arcade.overlap(player, item3, touchItem, null, {itemPickedUp: item3, dialogueName: 'itemDialogue3'});
 
 		//checks table collisions
 		game.physics.arcade.collide(player, tables, tableCallback);
@@ -121,7 +146,6 @@ function AtDanceGame() {
 	}
 
 	function updatePlayer() {
-
 		//mouse following
 		// player.rotation = game.physics.arcade.angleToPointer(player);
 		// game.physics.arcade.moveToPointer(player);
@@ -139,7 +163,19 @@ function AtDanceGame() {
 			player.x += Math.cos(directionAngle) * player.body.velocity;
 			player.y += Math.sin(directionAngle) * player.body.velocity;
 		}
+	}
 
+	function touchItem() {
+		this.itemPickedUp.kill();
+		game.paused = true;
+		dialogue = game.add.sprite(game.width/2, game.height/4, this.dialogueName);
+		setTimeout(killDialogue, 2000);
+	}
+
+	function killDialogue() {
+		game.paused = false;
+		dialogue.kill();
+		dialogue = null;
 	}
 
 	return {
