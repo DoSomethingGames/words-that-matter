@@ -23,16 +23,17 @@ module.exports = function (grunt) {
       main: {
         files: [
           {src: ['src/index.html'], dest: 'deploy/index.html'},
-          {cwd: 'src/css', src: '**/*', dest: 'deploy/css/game.css', expand: true},
+          {cwd: 'src/css', src: '**/*', dest: 'deploy/css', expand: true},
           {cwd: 'src/assets', src: '**/*', dest: 'deploy/assets', expand: true}
         ]
       }
     },
     concat: {
       dist: {
-        src: [  "src/lib/**/*.js",
-          "src/game/main.js",
-          "src/States/atPromState.js"
+        src: [  'src/lib/**/*.js',
+          'src/game/main.js',
+          'src/States/GettingReadyState.js',
+          'src/States/atPromState.js'
            ],
         dest: 'deploy/js/<%= pkg.name %>.js'
       }
