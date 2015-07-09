@@ -3,6 +3,9 @@ function AtDanceGame() {
 	//board dimensions
 	var BOARD_WIDTH, BOARD_HEIGHT;
 
+	//game start/end
+	var startButton;
+
 	//table
 	var tableCount;
 	var tables;
@@ -25,6 +28,9 @@ function AtDanceGame() {
 		BOARD_HEIGHT = 600;
 		BOARD_WIDTH = 800;
 
+		game.paused = true;
+		startButton = null;
+
 		//table
 		tables = null;
 		tableCount = 6;
@@ -36,6 +42,7 @@ function AtDanceGame() {
 	}
 
 	function preload() {
+		game.load.image('startButtonImg', 'assets/ADG_startButton.png');
 
 		game.load.image('tableImg', 'assets/ADG_table.png');
 		game.load.image('enemyImg', 'assets/ADG_couple.png')
@@ -49,8 +56,6 @@ function AtDanceGame() {
 		game.load.image('itemDialogue1', 'assets/ADG_couple.png');
 		game.load.image('itemDialogue2', 'assets/ADG_couple.png');
 		game.load.image('itemDialogue3', 'assets/ADG_couple.png');
-
-
 	}
 
 	function create() {
@@ -108,8 +113,26 @@ function AtDanceGame() {
 		item3 = game.add.sprite(300, 300, 'itemImg3');
 		game.physics.arcade.enable(item3);
 
-		player.body.bounce.set(5);
+		//draws player
+		player = game.add.sprite(10, BOARD_HEIGHT/2 - 12.5, 'playerImg');
+		player.name = 'player';
+		game.physics.arcade.enable(player);
+		player.body.allowGravity = false;
+		player.body.collideWorldBounds = true;
+		player.body.bounce.setTo(1,1);
 		player.body.velocity = 3;
+
+		//start button
+		startButton = game.add.button(0, 0, 'startButtonImg', null, null, 2, 1, 0);
+		startButton.inputEnabled = true;
+		startButton.events.onInputUp.add(actionOnClick, {selected: 1});
+	}
+
+	function actionOnClick() {
+		console.log("clickd");
+		game.paused = false;
+		startButton.kill();
+		startButton = null;
 	}
 
 	function update() {
@@ -136,7 +159,8 @@ function AtDanceGame() {
 		updateEnemies();
 
 		//updates player movement
-		updatePlayer();
+		updatePlayer();	
+
 	}
 
 	function shutdown() {
