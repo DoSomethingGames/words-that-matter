@@ -138,6 +138,7 @@ function AtDanceGame() {
 		//checks enemy collisions
 		game.physics.arcade.collide(player, enemies, touchItem, null, {type: 'enemy', itemPickedUp: enemyDialogue, dialogueName: 'enemyDialogue'});
 		//game.physics.arcade.overlap(player, enemies, touchItem, null, {type: 'enemy', itemPickedUp: enemyDialogue, dialogueName: 'enemyDialogue'});
+
 		game.physics.arcade.collide(enemies, tables);
 		game.physics.arcade.overlap(enemies, tables);
 
@@ -180,7 +181,6 @@ function AtDanceGame() {
 	}
 
 	function touchItem() {
-		console.log('hello' + this.type);
 		if (this.type == 'item') {
 			this.itemPickedUp.kill();
 		}
