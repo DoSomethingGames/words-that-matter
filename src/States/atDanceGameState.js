@@ -5,6 +5,7 @@ function AtDanceGame() {
 
 	//game start/end
 	var startButton;
+	var paused;
 
 	//table
 	var tableCount;
@@ -27,7 +28,7 @@ function AtDanceGame() {
 		BOARD_HEIGHT = 600;
 		BOARD_WIDTH = 800;
 
-		game.paused = true;
+		paused = true;
 		startButton = null;
 
 		//table
@@ -88,7 +89,7 @@ function AtDanceGame() {
 			couple.body.collideWorldBounds = true;
 			couple.body.allowGravity = false;
 			couple.body.bounce.setTo(1,1);
-			couple.body.velocity.setTo(200);
+			couple.body.velocity.setTo(0);
 		}
 
 		//generating items
@@ -116,7 +117,8 @@ function AtDanceGame() {
 
 	function actionOnClick() {
 		console.log("clickd");
-		game.paused = false;
+		paused = false;
+		enemies.forEach(function(couple) { couple.body.velocity.setTo(200); }, this);
 		startButton.kill();
 		startButton = null;
 	}
@@ -141,12 +143,13 @@ function AtDanceGame() {
 		game.physics.arcade.collide(enemies, tables);
 		game.physics.arcade.overlap(enemies, tables);
 
-		//updates enemy movement
-		updateEnemies();
+		if (!paused) {
+			//updates enemy movement
+			updateEnemies();
 
-		//updates player movement
-		updatePlayer();	
-
+			//updates player movement
+			updatePlayer();	
+		}
 	}
 
 	function shutdown() {
