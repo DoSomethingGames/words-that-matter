@@ -4,12 +4,12 @@ function GettingReady() {
   var choiceButton1, choiceButton2, dateDialogue, friendDialogue;
   
   var dialogueTree = [
-    {type: 'friend', msg: 'friend1', delay: -1, duration: -1},
-    {type: 'date', msg: 'date1', delay: -1, duration: -1},
-    {type: 'date', msg: 'date2', delay: -1, duration: -1},
-    {type: 'friend', msg: 'friend2', delay: -1, duration: -1},
-    {type: 'friend', msg: 'friend3', delay: -1, duration: -1},
-    {type: 'date', msg: 'date3', delay: -1, duration: -1},
+    // {type: 'friend', msg: 'friend1', delay: -1, duration: -1},
+    // {type: 'date', msg: 'date1', delay: -1, duration: -1},
+    // {type: 'date', msg: 'date2', delay: -1, duration: -1},
+    // {type: 'friend', msg: 'friend2', delay: -1, duration: -1},
+    // {type: 'friend', msg: 'friend3', delay: -1, duration: -1},
+    // {type: 'date', msg: 'date3', delay: -1, duration: -1},
     {type: 'choice', msg: 0, delay: -1, duration: -1}, 
     ];
 
@@ -189,13 +189,35 @@ function GettingReady() {
           console.log('error in switch');
       }
 
+      if (choiceButton1) {
+        choiceButton1.destroy();
+      }
+
+      if (choiceButton2) {
+        choiceButton2.destroy();
+      }
+
       choiceButton1 = createChoiceButton1(key1);
       choiceButton1.inputEnabled = true;
       choiceButton1.events.onInputUp.add(onChoiceSelected, {selected: 1});
+      choiceButton1.events.onInputOver.add(function() {
+        choiceButton1.y += 10;
+      });
+      choiceButton1.events.onInputOut.add(function() {
+        choiceButton1.y -= 10;
+      })
 
       choiceButton2 = createChoiceButton2(key2);
       choiceButton2.inputEnabled = true;
       choiceButton2.events.onInputUp.add(onChoiceSelected, {selected: 2});
+      choiceButton2.events.onInputOver.add(function() {
+        choiceButton2.width += 10;
+        choiceButton2.height += 10;
+      });
+      choiceButton2.events.onInputOut.add(function() {
+        choiceButton2.width -= 10;
+        choiceButton2.height -= 10;
+      })
     }
     else if (dialogueTree[progress].type == 'date') {
       dateDialogue = createDateDialogue(dialogueTree[progress].msg);
