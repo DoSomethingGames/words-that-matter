@@ -248,6 +248,15 @@ function AtProm() {
           console.log('error in switch');
       }
 
+      // Destroying buttons to clean up references, like removing event listeners
+      if (choiceButton1) {
+        choiceButton1.destroy();
+      }
+
+      if (choiceButton2) {
+        choiceButton2.destroy();
+      }
+
       choiceButton1 = createChoiceButton1(key1);
       choiceButton1.inputEnabled = true;
       choiceButton1.events.onInputUp.add(onChoiceSelected, {selected: 1});
