@@ -110,6 +110,45 @@ function GettingReady() {
   }
 
   /**
+   * Increases the size of a button. The intent is for this function to be used
+   * as a callback with the `button` variable "binded" to the function.
+   *
+   * ex: button1.events.onInputOver.add(increaseButtonSize.bind({button: button1}))
+   */
+  function increaseButtonSize() {
+    var sizeDelta = 10;
+
+    if (!this.button) {
+      return;
+    }
+
+    this.button.width += sizeDelta;
+    this.button.height += sizeDelta;
+
+    this.button.x -= (sizeDelta / 2);
+    this.button.y -= (sizeDelta / 2);
+  }
+
+  /**
+   * Decreases the size of a button.
+   *
+   * See increaseButtonSize() for more notes on its usage.
+   */
+  function decreaseButtonSize() {
+    var sizeDelta = 10;
+
+    if (!this.button) {
+      return;
+    }
+
+    this.button.width -= sizeDelta;
+    this.button.height -= sizeDelta;
+
+    this.button.x += (sizeDelta / 2);
+    this.button.y += (sizeDelta / 2);
+  }
+
+  /**
    * createDateDialogue: [asset key] -> void
    * adds a button to the current state, using the asset key as the image
   **/
@@ -189,13 +228,26 @@ function GettingReady() {
           console.log('error in switch');
       }
 
+      // Destroying buttons to clean up references, like removing event listeners
+      if (choiceButton1) {
+        choiceButton1.destroy();
+      }
+
+      if (choiceButton2) {
+        choiceButton2.destroy();
+      }
+
       choiceButton1 = createChoiceButton1(key1);
       choiceButton1.inputEnabled = true;
       choiceButton1.events.onInputUp.add(onChoiceSelected, {selected: 1});
+      choiceButton1.events.onInputOver.add(increaseButtonSize.bind({button: choiceButton1}));
+      choiceButton1.events.onInputOut.add(decreaseButtonSize.bind({button: choiceButton1}));
 
       choiceButton2 = createChoiceButton2(key2);
       choiceButton2.inputEnabled = true;
       choiceButton2.events.onInputUp.add(onChoiceSelected, {selected: 2});
+      choiceButton2.events.onInputOver.add(increaseButtonSize.bind({button: choiceButton2}));
+      choiceButton2.events.onInputOut.add(decreaseButtonSize.bind({button: choiceButton2}));
     }
     else if (dialogueTree[progress].type == 'date') {
       dateDialogue = createDateDialogue(dialogueTree[progress].msg);
