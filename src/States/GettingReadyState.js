@@ -110,7 +110,10 @@ function GettingReady() {
   }
 
   /**
-   * @todo comment
+   * Increases the size of a button. The intent is for this function to be used
+   * as a callback with the `button` variable "binded" to the function.
+   *
+   * ex: button1.events.onInputOver.add(increaseButtonSize.bind({button: button1}))
    */
   function increaseButtonSize() {
     var sizeDelta = 10;
@@ -126,6 +129,11 @@ function GettingReady() {
     this.button.y -= (sizeDelta / 2);
   }
 
+  /**
+   * Decreases the size of a button.
+   *
+   * See increaseButtonSize() for more notes on its usage.
+   */
   function decreaseButtonSize() {
     var sizeDelta = 10;
 
