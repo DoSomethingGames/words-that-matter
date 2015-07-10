@@ -10,10 +10,12 @@ function AtDanceGame() {
 	//table
 	var tableCount;
 	var tables;
+	var tableDialogue
 
 	//enemies
 	var enemyCount;
 	var enemies;
+	var enemyDialogue;
 
 	//player
 	var player;
@@ -25,7 +27,6 @@ function AtDanceGame() {
 	var dialogue;
 
 	function init() {
-
 		BOARD_HEIGHT = 600;
 		BOARD_WIDTH = 800;
 
@@ -39,7 +40,6 @@ function AtDanceGame() {
 		//enemycouples
 		enemies = null;
 		enemyCount = 5;
-
 	}
 
 	function preload() {
@@ -57,6 +57,10 @@ function AtDanceGame() {
 		game.load.image('itemDialogue1', 'assets/ADG_couple.png');
 		game.load.image('itemDialogue2', 'assets/ADG_couple.png');
 		game.load.image('itemDialogue3', 'assets/ADG_couple.png');
+
+		//enemy, table collision dialogue
+		game.load.image('enemyDialogue', 'assets/ADG_couple.png');
+		game.load.image('tableDialogue', 'assets/ADG_couple.png');
 	}
 
 	function create() {
@@ -94,18 +98,6 @@ function AtDanceGame() {
 			couple.body.velocity.setTo(0);
 		}
 
-		//draws player
-		player = game.add.sprite(10, BOARD_HEIGHT/2 - 12.5, 'playerImg');
-		player.name = 'player';
-		game.physics.arcade.enable(player);
-		player.body.allowGravity = false;
-		player.body.collideWorldBounds = true;
-		player.body.velocity = 10;
-
-		//draws table
-		player = game.add.sprite(createPlayer.x, createPlayer.y, 'playerImg');
-		game.physics.arcade.enable(player);
-
 		//generating items
 		item1 = game.add.sprite(250, 100, 'itemImg1');
 		game.physics.arcade.enable(item1);
@@ -120,7 +112,7 @@ function AtDanceGame() {
 		game.physics.arcade.enable(player);
 		player.body.allowGravity = false;
 		player.body.collideWorldBounds = true;
-		player.body.bounce.setTo(1,1);
+		player.body.bounce.setTo(200,200);
 		player.body.velocity = 3;
 
 		//start button
@@ -129,31 +121,23 @@ function AtDanceGame() {
 		startButton.events.onInputUp.add(actionOnClick, {selected: 1});
 	}
 
-	function actionOnClick() {
-		console.log("clickd");
-		paused = false;
-		enemies.forEach(function(couple) { couple.body.velocity.setTo(200); }, this);
-		startButton.kill();
-		startButton = null;
-	}
-
 	function update() {
 		//item disappears when touched and brings up dialogue
-		game.physics.arcade.collide(player, item1, touchItem, null, {itemPickedUp: item1, dialogueName: 'itemDialogue1'});
-		game.physics.arcade.collide(player, item2, touchItem, null, {itemPickedUp: item2, dialogueName: 'itemDialogue2'});
+		game.physics.arcade.collide(player, item1, touchItem, null, {type: 'item', itemPickedUp: item1, dialogueName: 'itemDialogue1'});
+		game.physics.arcade.collide(player, item2, touchItem, null, {type: 'item', itemPickedUp: item2, dialogueName: 'itemDialogue2'});
 		game.physics.arcade.collide(player, item3, touchItem, null, {itemPickedUp: item3, dialogueName: 'itemDialogue3'});
 
-		game.physics.arcade.overlap(player, item1, touchItem, null, {itemPickedUp: item1, dialogueName: 'itemDialogue1'});
-		game.physics.arcade.overlap(player, item2, touchItem, null, {itemPickedUp: item2, dialogueName: 'itemDialogue2'});
-		game.physics.arcade.overlap(player, item3, touchItem, null, {itemPickedUp: item3, dialogueName: 'itemDialogue3'});
+		game.physics.arcade.overlap(player, item1, touchItem, null, {type: 'item', itemPickedUp: item1, dialogueName: 'itemDialogue1'});
+		game.physics.arcade.overlap(player, item2, touchItem, null, {type: 'item', itemPickedUp: item2, dialogueName: 'itemDialogue2'});
+		game.physics.arcade.overlap(player, item3, touchItem, null, {type: 'item', itemPickedUp: item3, dialogueName: 'itemDialogue3'});
 
 		//checks table collisions
-		game.physics.arcade.collide(player, tables, tableCallback);
-		game.physics.arcade.overlap(player, tables, tableCallback);
+		game.physics.arcade.collide(player, tables, touchItem, null, {type: 'table', itemPickedUp: tables, dialogueName: 'tableDialogue'});
+		game.physics.arcade.overlap(player, tables, touchItem, null, {type: 'table', itemPickedUp: enemies, dialogueName: 'tableDialogue'});
 
 		//checks enemy collisions
-		game.physics.arcade.collide(player, enemies, enemyCallback);
-		game.physics.arcade.overlap(player, enemies, enemyCallback);
+		game.physics.arcade.collide(player, enemies, touchItem, null, {type: 'enemy', itemPickedUp: enemyDialogue, dialogueName: 'enemyDialogue'});
+		//game.physics.arcade.overlap(player, enemies, touchItem, null, {type: 'enemy', itemPickedUp: enemyDialogue, dialogueName: 'enemyDialogue'});
 		game.physics.arcade.collide(enemies, tables);
 		game.physics.arcade.overlap(enemies, tables);
 
@@ -172,18 +156,6 @@ function AtDanceGame() {
 		enemies.destroy();
 	}
 
-	function tableCallback() {
-		game.paused = true;
-		//DIALOGUE HAPPENS HERE
-		//game.paused = false;
-	}
-
-	function enemyCallback() {
-		game.paused = true;
-		//DIALOGUE HAPPENS HERE
-		//game.paused = false;		
-	}
-
 	function updateEnemies() {
 		enemies.forEach(function(couple) {
 			couple.angle+=5;
@@ -191,11 +163,7 @@ function AtDanceGame() {
 	}
 
 	function updatePlayer() {
-
 		//mouse following
-		// player.rotation = game.physics.arcade.angleToPointer(player);
-		// game.physics.arcade.moveToPointer(player);
-
 		var yDistance = game.input.mousePointer.y - player.y;
 		var xDistance = game.input.mousePointer.x - player.x;
 		if (Math.sqrt(yDistance*yDistance +  xDistance*xDistance) < player.body.velocity) {
@@ -209,20 +177,33 @@ function AtDanceGame() {
 			player.x += Math.cos(directionAngle) * player.body.velocity;
 			player.y += Math.sin(directionAngle) * player.body.velocity;
 		}
-
 	}
 
 	function touchItem() {
-		this.itemPickedUp.kill();
+		console.log('hello' + this.type);
+		if (this.type == 'item') {
+			this.itemPickedUp.kill();
+		}
 		game.paused = true;
 		dialogue = game.add.sprite(game.width/2, game.height/4, this.dialogueName);
 		setTimeout(killDialogue, 2000);
+		if (this.type != 'item') {
+			player.x -= 5;
+			player.y -= 5;
+		}
 	}
 
 	function killDialogue() {
 		game.paused = false;
 		dialogue.kill();
 		dialogue = null;
+	}
+
+	function actionOnClick() {
+		paused = false;
+		enemies.forEach(function(couple) { couple.body.velocity.setTo(200); }, this);
+		startButton.kill();
+		startButton = null;
 	}
 
 	return {
