@@ -32,6 +32,7 @@ module.exports = function (grunt) {
       dist: {
         src: [  'src/lib/**/*.js',
           'src/game/main.js',
+          'src/States/StartScreenState.js',
           'src/States/GettingReadyState.js',
           'src/States/atPromState.js',
           'src/States/BystanderInterventionState.js'
