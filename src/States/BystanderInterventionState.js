@@ -262,15 +262,13 @@ function BystanderIntervention() {
       choiceButton2.events.onInputOver.add(increaseButtonSize.bind({button: choiceButton2}));
       choiceButton2.events.onInputOut.add(decreaseButtonSize.bind({button: choiceButton2}));
     }
-    else if (dialogueTree[progress].type == 'date') {
+    else if (dialogueTree[progress].type == 'luis') {
       dateDialogue = createDateDialogue(dialogueTree[progress].msg);
       setTimeout(displayNext, DIALOGUE_DISPLAY_TIME);
-      console.log('date');
     }
-    else if (dialogueTree[progress].type == 'friend') {
+    else if (dialogueTree[progress].type == 'tyrell') {
       friendDialogue = createFriendDialogue(dialogueTree[progress].msg);
       setTimeout(displayNext, DIALOGUE_DISPLAY_TIME);
-      console.log('friend');
     }
     else {
       console.log('unable to match type');
@@ -347,5 +345,5 @@ function BystanderIntervention() {
   }
 }
 
-game.state.add('bystander-intervention', new BystanderIntervention());
-game.state.start('bystander-intervention');
+// game.state.add('bystander-intervention', new BystanderIntervention());
+// game.state.start('bystander-intervention');
