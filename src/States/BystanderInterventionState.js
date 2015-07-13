@@ -4,6 +4,11 @@ function BystanderIntervention() {
   var choiceButton1, choiceButton2, dateDialogue, friendDialogue;
   
   var dialogueTree = [
+    {type: 'narrative', msg: 'narrative1'},
+    {type: 'narrative', msg: 'narrative2'},
+    {type: 'narrative', msg: 'narrative3'},
+    {type: 'narrative', msg: 'narrative4'},
+    {type: 'narrative', msg: 'narrative5'},
     {type: 'luis', msg: 'luis1'},
     {type: 'tyrell', msg: 'tyrell1'},
     {type: 'luis', msg: 'luis2'},
@@ -38,6 +43,15 @@ function BystanderIntervention() {
     //background
     game.load.image('background', 'assets/Backgrounds/post-prom-bkgrd.png');
 
+    //narrative assets
+    game.load.image('narrative1', 'assets/bystander-intervention/PP_narrative1.png');
+    game.load.image('narrative2', 'assets/bystander-intervention/PP_narrative2.png');
+    game.load.image('narrative3', 'assets/bystander-intervention/PP_narrative3.png');
+    game.load.image('narrative4', 'assets/bystander-intervention/PP_narrative4.png');
+    game.load.image('narrative5', 'assets/bystander-intervention/PP_narrative5.png');
+
+
+
     //player assets
     game.load.image('choice1a', 'assets/bystander-intervention/BI_choice1a.png');
     game.load.image('choice1b', 'assets/bystander-intervention/BI_choice1b.png');
@@ -45,7 +59,7 @@ function BystanderIntervention() {
     game.load.image('choice2b', 'assets/bystander-intervention/BI_choice2b.png');
 
     //luis assets
-    game.load.image('luisPic', 'assets/luisCrop.png');
+    game.load.image('luisPic', 'assets/luis.png');
     game.load.image('luis1', 'assets/bystander-intervention/BI_luis1.png');
     game.load.image('luis2', 'assets/bystander-intervention/BI_luis2.png');
     game.load.image('luis3', 'assets/bystander-intervention/BI_luis3.png');
@@ -54,7 +68,7 @@ function BystanderIntervention() {
     game.load.image('luis6', 'assets/bystander-intervention/BI_luis6.png');
 
     //tyrell assets
-    game.load.image('tyrellPic', 'assets/tyrellCrop.png');
+    game.load.image('tyrellPic', 'assets/tyrell.png');
     game.load.image('tyrell1', 'assets/bystander-intervention/BI_tyrell1.png');
     game.load.image('tyrell2', 'assets/bystander-intervention/BI_tyrell2.png');
     game.load.image('tyrell3', 'assets/bystander-intervention/BI_tyrell3.png');
@@ -182,11 +196,19 @@ function BystanderIntervention() {
   }
 
   /**
+   * createNarrative: [asset key] -> void 
+   * adds narrative sprite corresponding to asset key to the screen 
+  **/
+
+  function createNarrative(key) {
+    return game.add.sprite(game.world.centerX - 350, game.world.centerY + 100, key);
+  }
+
+  /**
    * displayNext: void -> void
    * function iterates through dialogueTree and checks 'type' tag in order to display friend/date dialogue or choice buttons.
    */
   function displayNext() {
-
     if (dateDialogue) {
       dateDialogue.destroy();
     }
@@ -195,7 +217,7 @@ function BystanderIntervention() {
       friendDialogue.destroy();
     }
 
-    if (progress >= dialogueTree.length) {  //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ ISSUE!! @@@@@@@@@@@ -> progressing after loop
+    if (progress >= dialogueTree.length) { 
       transitionToNextState();
       return;
     }
@@ -283,15 +305,6 @@ function BystanderIntervention() {
    * clears the screen of all buttons and/or dialogue, resets all to null, and then displays the next dialogue
    */
   function onChoiceSelected() {
-
-    // if (dateDialogue) {
-    //   dateDialogue.destroy();
-    // }
-    
-    // if (friendDialogue) {
-    //   friendDialogue.destroy();
-    // }
-
     if (choiceButton1) {
       choiceButton1.destroy();
     }
