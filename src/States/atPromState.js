@@ -2,6 +2,9 @@ function AtProm() {
 
   // These are the actual sprites and buttons that will be created and destroyed as the dialogue progresses
   var choiceButton1, choiceButton2, dateDialogue, friendDialogue, narrative;
+  var spriteDate;
+  var spriteFriend;
+  var spriteBackground;
   
   var dialogueTree = [
     {type: 'narrative', msg: 'narrative1', delay: -1, duration: -1},
@@ -82,7 +85,7 @@ function AtProm() {
     console.log('in create');
 
     //game.stage.backgroundColor = 'background';
-    game.add.tileSprite(0, 0, 800, 600, 'background');
+    spriteBackground = game.add.tileSprite(0, 0, 800, 600, 'background');
 
     //game.add.sprite(game.world.centerX - 350, game.world.centerY - 200, 'friendPic');
     //game.add.sprite(game.world.centerX + 150, game.world.centerY - 200, 'datePic');
@@ -164,7 +167,10 @@ function AtProm() {
   **/
 
   function createDateDialogue(key) {
-    game.add.sprite(game.world.centerX + 150, game.world.centerY - 200, 'datePic');
+    if (!spriteDate) {
+      spriteDate = game.add.sprite(game.world.centerX + 150, game.world.centerY - 200, 'datePic');
+    }
+
     return game.add.sprite(game.world.centerX - 150, game.world.centerY - 250, key);
   }
 
@@ -174,7 +180,10 @@ function AtProm() {
   **/
 
   function createFriendDialogue(key) {
-    game.add.sprite(game.world.centerX - 350, game.world.centerY - 200, 'friendPic');
+    if (!spriteFriend) {
+      spriteFriend = game.add.sprite(game.world.centerX - 350, game.world.centerY - 200, 'friendPic');
+    }
+
     return game.add.sprite(game.world.centerX - 150, game.world.centerY - 250, key);
   }
 
@@ -209,7 +218,10 @@ function AtProm() {
       narrative.destroy();
     }
 
-    if (dialogueTree[progress].type == 'choice') {
+    if (progress >= dialogueTree.length) {
+      transitionToNextState();
+    }
+    else if (dialogueTree[progress].type == 'choice') {
 
       //checking for correct player choice dialogue buttons
       switch(dialogueTree[progress].msg) {
@@ -327,6 +339,32 @@ function AtProm() {
 
     // Display the next dialogue
     displayNext();
+  }
+
+  /**
+   * Begin transition to the next state with a fade out.
+   */
+  function transitionToNextState() {
+    var properties = {alpha: 0};
+    var fadeOutDuration = 1500;
+    var ease = Phaser.Easing.Linear.None;
+    var autoStart = true;
+    var delay = 1000;
+    var repeat = false;
+    var yoyo = false;
+
+    game.add.tween(spriteBackground).to(properties, fadeOutDuration, ease, autoStart, delay, repeat, yoyo);
+    game.add.tween(spriteDate).to(properties, fadeOutDuration, ease, autoStart, delay, repeat, yoyo);
+    game.add.tween(spriteFriend).to(properties, fadeOutDuration, ease, autoStart, delay, repeat, yoyo);
+    setTimeout(startNextState, fadeOutDuration + delay);
+  }
+
+  /**
+   * Add and start next state. Starting a new state automatically shuts down the current one.
+   */
+  function startNextState() {
+    game.state.add('at-mini-game', new AtDanceGame());
+    game.state.start('at-mini-game');
   }
 
   return {
