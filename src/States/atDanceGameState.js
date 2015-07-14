@@ -222,5 +222,3 @@ function AtDanceGame() {
 		update: update
 	}
 }
-
-game.state.add('at-mini-game', new AtDanceGame());
