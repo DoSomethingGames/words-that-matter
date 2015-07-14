@@ -70,4 +70,4 @@ function EndScreen() {
 }
 
 game.state.add('end-screen', new EndScreen());
-game.state.start('end-screen');
+// game.state.start('end-screen');
