@@ -16,7 +16,7 @@ function AtDanceGame() {
 	//enemies
 	var enemyCount;
 	var enemies;
-	var enemyDialogue;
+	var enemyDialogue = ['enemyDialogue1', 'enemyDialogue2', 'enemyDialogue3'];
 
 	//player
 	var player;
@@ -63,8 +63,10 @@ function AtDanceGame() {
 		game.load.image('itemDialogue3', 'assets/mini-game/ADG_itemDialogue3.png');
 
 		//enemy, table collision dialogue
-		game.load.image('enemyDialogue', 'assets/mini-game/ADG_couple.png');
-		game.load.image('tableDialogue', 'assets/mini-game/ADG_couple.png');
+		game.load.image('enemyDialogue1', 'assets/mini-game/enemyDialogue1.png');
+		game.load.image('enemyDialogue2', 'assets/mini-game/enemyDialogue2.png');
+		game.load.image('enemyDialogue3', 'assets/mini-game/enemyDialogue3.png');
+		game.load.image('tableDialogue', 'assets/ADG_couple.png');
 	}
 
 	function create() {
@@ -142,7 +144,8 @@ function AtDanceGame() {
 		game.physics.arcade.overlap(player, tables, touchItem, null, {type: 'table', itemPickedUp: enemies, dialogueName: 'tableDialogue'});
 
 		//checks enemy collisions
-		game.physics.arcade.collide(player, enemies, touchItem, null, {type: 'enemy', itemPickedUp: enemyDialogue, dialogueName: 'enemyDialogue'});
+		game.physics.arcade.collide(player, enemies, touchItem, null, 
+			{type: 'enemy', itemPickedUp: enemyDialogue, dialogueName: enemyDialogue[between(0, 2)]});
 		//game.physics.arcade.overlap(player, enemies, touchItem, null, {type: 'enemy', itemPickedUp: enemyDialogue, dialogueName: 'enemyDialogue'});
 
 		game.physics.arcade.collide(enemies, tables);
