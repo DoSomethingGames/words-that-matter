@@ -2,6 +2,7 @@ function AtDanceGame() {
 
 	//board dimensions
 	var BOARD_WIDTH, BOARD_HEIGHT;
+	var background;
 
 	//game start/end
 	var startButton;
@@ -43,28 +44,33 @@ function AtDanceGame() {
 	}
 
 	function preload() {
-		game.load.image('startButtonImg', 'assets/ADG_startButton.png');
+		//background
+		game.load.image('background', 'assets/Backgrounds/ADG_background.png');
 
-		game.load.image('tableImg', 'assets/ADG_table.png');
-		game.load.image('enemyImg', 'assets/ADG_couple.png')
-		game.load.image('playerImg', 'assets/ADG_player.png');
+		game.load.image('startButtonImg', 'assets/mini-game/ADG_startButton.png');
 
-		game.load.image('itemImg1', 'assets/ADG_player.png');
-		game.load.image('itemImg2', 'assets/ADG_player.png');
-		game.load.image('itemImg3', 'assets/ADG_player.png');
+		game.load.image('tableImg', 'assets/mini-game/ADG_table.png');
+		game.load.image('enemyImg', 'assets/mini-game/ADG_couple.png')
+		game.load.image('playerImg', 'assets/mini-game/ADG_player.png');
+
+		game.load.image('itemImg1', 'assets/mini-game/ADG_bowtie.png');
+		game.load.image('itemImg2', 'assets/mini-game/ADG_corsage.png');
+		game.load.image('itemImg3', 'assets/mini-game/ADG_purse.png');
 
 		//item dialogue
-		game.load.image('itemDialogue1', 'assets/ADG_couple.png');
-		game.load.image('itemDialogue2', 'assets/ADG_couple.png');
-		game.load.image('itemDialogue3', 'assets/ADG_couple.png');
+		game.load.image('itemDialogue1', 'assets/mini-game/ADG_itemDialogue1.png');
+		game.load.image('itemDialogue2', 'assets/mini-game/ADG_itemDialogue2.png');
+		game.load.image('itemDialogue3', 'assets/mini-game/ADG_itemDialogue3.png');
 
 		//enemy, table collision dialogue
-		game.load.image('enemyDialogue', 'assets/ADG_couple.png');
-		game.load.image('tableDialogue', 'assets/ADG_couple.png');
+		game.load.image('enemyDialogue', 'assets/mini-game/ADG_couple.png');
+		game.load.image('tableDialogue', 'assets/mini-game/ADG_couple.png');
 	}
 
 	function create() {
 		game.physics.startSystem(Phaser.Physics.ARCADE);
+
+		background = game.add.tileSprite(0, 0, 800, 600, 'background');
 		
 		//draws tables
 		tables = game.add.group();
@@ -116,7 +122,7 @@ function AtDanceGame() {
 		player.body.velocity = 3;
 
 		//start button
-		startButton = game.add.button(0, 0, 'startButtonImg', null, null, 2, 1, 0);
+		startButton = game.add.button(game.world.centerX - game.cache.getImage('startButtonImg').width/2, game.world.centerY - game.cache.getImage('startButtonImg').height/2, 'startButtonImg', null, null, 2, 1, 0);
 		startButton.inputEnabled = true;
 		startButton.events.onInputUp.add(actionOnClick, {selected: 1});
 	}
