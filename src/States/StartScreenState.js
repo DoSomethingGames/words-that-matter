@@ -6,6 +6,7 @@ function StartScreen() {
 
 	function init() {
 		startButton = null;
+		console.log('init');
 	}
 
 	function preload() {
@@ -13,22 +14,24 @@ function StartScreen() {
 		game.load.image('background', 'assets/Backgrounds/startScreen.png');
 
 		//start button
-		game.load.image('startButton', 'assets/startButton.png');
+		game.load.image('startButton', 'assets/playButton.png');
+		console.log('assets loaded');
 	}
 
 	function create() {
 		background = game.add.tileSprite(0, 0, 800, 600, 'background');
 
-		startButton = game.add.button('startButton', game.world.centerX, game.world.centerY, null, null, 2, 1, 0);
+		startButton = game.add.button(game.world.centerX - 150, game.world.centerY, 'startButton', null, null, 2, 1, 0);
     startButton.inputEnabled = true;
     startButton.events.onInputUp.add(transitionToNextState);
     startButton.events.onInputOver.add(increaseButtonSize.bind({button: startButton}));
     startButton.events.onInputOut.add(decreaseButtonSize.bind({button: startButton}));
+    console.log('create');
 	}
 
 	function update() {}
 
-	  /**
+	/**
    * Increases the size of a button. The intent is for this function to be used
    * as a callback with the `button` variable "binded" to the function.
    *
@@ -67,8 +70,8 @@ function StartScreen() {
     this.button.y += (sizeDelta / 2);
   }
 
-    /**
-   * Begin transition to the next state with a fade out.
+  /**
+   * Begin transition to the next state with a fade out.  Modified to delete button as well.
    */
   function transitionToNextState() {
     var properties = {alpha: 0};
@@ -78,6 +81,8 @@ function StartScreen() {
     var delay = 2000;
     var repeat = false;
     var yoyo = false;
+
+    startButton.kill();
 
     game.add.tween(background).to(properties, fadeOutDuration, ease, autoStart, delay, repeat, yoyo);
     setTimeout(startNextState, fadeOutDuration + delay);

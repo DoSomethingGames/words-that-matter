@@ -182,7 +182,7 @@ function GettingReady() {
       friendDialogue.destroy();
     }
 
-    if (progress >= dialogueTree.length) {  //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ ISSUE!! @@@@@@@@@@@ -> progressing after loop
+    if (progress >= dialogueTree.length) {
       transitionToNextState();
       return;
     }
@@ -332,4 +332,4 @@ function GettingReady() {
 }
 
 game.state.add('getting-ready', new GettingReady());
-game.state.start('getting-ready');
+//game.state.start('getting-ready');
