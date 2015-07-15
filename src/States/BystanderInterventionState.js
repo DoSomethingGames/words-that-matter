@@ -1,7 +1,7 @@
 function BystanderIntervention() {
 
   // These are the actual sprites and buttons that will be created and destroyed as the dialogue progresses
-  var choiceButton1, choiceButton2, dateDialogue, friendDialogue;
+  var choiceButton1, choiceButton2, luisDialogue, tyrellDialogue, narrative;
   
   var dialogueTree = [
     {type: 'narrative', msg: 'narrative1'},
@@ -9,8 +9,8 @@ function BystanderIntervention() {
     {type: 'narrative', msg: 'narrative3'},
     {type: 'narrative', msg: 'narrative4'},
     {type: 'narrative', msg: 'narrative5'},
-    {type: 'luis', msg: 'luis1'},
     {type: 'tyrell', msg: 'tyrell1'},
+    {type: 'luis', msg: 'luis1'},
     {type: 'luis', msg: 'luis2'},
     {type: 'tyrell', msg: 'tyrell2'},
     {type: 'luis', msg: 'luis3'},
@@ -18,9 +18,9 @@ function BystanderIntervention() {
     {type: 'luis', msg: 'luis4'},
     {type: 'choice', msg: 0},
     {type: 'tyrell', msg: 'tyrell4'},
-    {type: 'luis', msg: 'luis5'},
-    {type: 'choice', msg: 1},
     {type: 'tyrell', msg: 'tyrell5'},
+    {type: 'choice', msg: 1},
+    {type: 'luis', msg: 'luis5'},
     {type: 'luis', msg: 'luis6'},
     {type: 'tyrell', msg: 'tyrell6'}
     ];
@@ -28,6 +28,7 @@ function BystanderIntervention() {
   var progress;
   var background;
   var DIALOGUE_DISPLAY_TIME = 2000;
+  var NARRATIVE_DISPLAY_TIME = 2000;
 
   function init() {
     progress = 0;
@@ -65,7 +66,7 @@ function BystanderIntervention() {
     game.load.image('luis3', 'assets/bystander-intervention/BI_luis3.png');
     game.load.image('luis4', 'assets/bystander-intervention/BI_luis4.png');
     game.load.image('luis5', 'assets/bystander-intervention/BI_luis5.png');
-    game.load.image('luis6', 'assets/bystander-intervention/BI_luis6.png');
+    game.load.image('luis6', 'assets/bystander-intervention/BI_luis6.png'); //@todo fix this error
 
     //tyrell assets
     game.load.image('tyrellPic', 'assets/tyrell.png');
@@ -180,8 +181,8 @@ function BystanderIntervention() {
    * adds a button to the current state, using the asset key as the image
   **/
 
-  function createDateDialogue(key) {
-    game.add.sprite(game.world.centerX + 150, game.world.centerY - 200, 'datePic');
+  function createLuisDialogue(key) {
+    game.add.sprite(game.world.centerX + 150, game.world.centerY - 200, 'luisPic');
     return game.add.sprite(game.world.centerX - 150, game.world.centerY - 250, key);
   }
 
@@ -190,8 +191,8 @@ function BystanderIntervention() {
    * adds a button to the current state, using the asset key as the image
   **/
 
-  function createFriendDialogue(key) {
-    game.add.sprite(game.world.centerX - 350, game.world.centerY - 200, 'friendPic');
+  function createTyrellDialogue(key) {
+    game.add.sprite(game.world.centerX - 350, game.world.centerY - 200, 'tyrellPic');
     return game.add.sprite(game.world.centerX - 150, game.world.centerY - 250, key);
   }
 
@@ -209,12 +210,16 @@ function BystanderIntervention() {
    * function iterates through dialogueTree and checks 'type' tag in order to display friend/date dialogue or choice buttons.
    */
   function displayNext() {
-    if (dateDialogue) {
-      dateDialogue.destroy();
+    if (tyrellDialogue) {
+      tyrellDialogue.destroy();
     }
     
-    if (friendDialogue) {
-      friendDialogue.destroy();
+    if (luisDialogue) {
+      luisDialogue.destroy();
+    }
+
+    if (narrative) {
+      narrative.destroy();
     }
 
     if (progress >= dialogueTree.length) { 
@@ -239,24 +244,6 @@ function BystanderIntervention() {
           key1 = 'choice2a';
           key2 = 'choice2b';
           console.log('c2');
-          break;
-
-        case 2:
-          key1 = 'choice3a';
-          key2 = 'choice3b';
-          console.log('c3');
-          break;
-
-        case 3:
-          key1 = 'choice4a';
-          key2 = 'choice4b';
-          console.log('c4');
-          break;
-
-        case 4:
-          key1 = 'choice5a';
-          key2 = 'choice5b';
-          console.log('c5');
           break;
 
         default:
@@ -284,12 +271,17 @@ function BystanderIntervention() {
       choiceButton2.events.onInputOver.add(increaseButtonSize.bind({button: choiceButton2}));
       choiceButton2.events.onInputOut.add(decreaseButtonSize.bind({button: choiceButton2}));
     }
+    else if (dialogueTree[progress].type == 'narrative') {
+      narrative = createNarrative(dialogueTree[progress].msg);
+      setTimeout(displayNext, NARRATIVE_DISPLAY_TIME);
+      console.log('narrative');
+    }
     else if (dialogueTree[progress].type == 'luis') {
-      dateDialogue = createDateDialogue(dialogueTree[progress].msg);
+      luisDialogue = createLuisDialogue(dialogueTree[progress].msg);
       setTimeout(displayNext, DIALOGUE_DISPLAY_TIME);
     }
     else if (dialogueTree[progress].type == 'tyrell') {
-      friendDialogue = createFriendDialogue(dialogueTree[progress].msg);
+      tyrellDialogue = createTyrellDialogue(dialogueTree[progress].msg);
       setTimeout(displayNext, DIALOGUE_DISPLAY_TIME);
     }
     else {
@@ -313,8 +305,8 @@ function BystanderIntervention() {
       choiceButton2.destroy();
     }
 
-    dateDialogue = null;
-    friendDialogue = null;
+    luisDialogue = null;
+    tyrellDialogue = null;
     choiceButton1 = null;
     choiceButton2 = null;
     narrative = null;
@@ -358,5 +350,5 @@ function BystanderIntervention() {
   }
 }
 
-// game.state.add('bystander-intervention', new BystanderIntervention());
-// game.state.start('bystander-intervention');
+game.state.add('bystander-intervention', new BystanderIntervention());
+game.state.start('bystander-intervention');
