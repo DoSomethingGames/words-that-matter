@@ -36,7 +36,8 @@ module.exports = function (grunt) {
           'src/States/GettingReadyState.js',
           'src/States/atPromState.js',
           'src/States/atDanceGameState.js',
-          'src/States/BystanderInterventionState.js'
+          'src/States/BystanderInterventionState.js',
+          'src/States/EndScreenState.js'
            ],
         dest: 'deploy/js/<%= pkg.name %>.js'
       }
