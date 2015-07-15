@@ -205,6 +205,7 @@ function AtDanceGame() {
       }
     }
     game.paused = true;
+    player.body.enable = false;
     // 350 and 100 are half the size of the dialogue asset
     dialogue = game.add.sprite(game.world.centerX - 350, game.world.centerY - 100, this.dialogueName);
     setTimeout(killDialogue, 2000);
@@ -215,6 +216,7 @@ function AtDanceGame() {
   }
 
   function killDialogue() {
+  	setTimeout(function enablePhysics() {player.body.enable = true;}, 200);
     game.paused = false;
     dialogue.kill();
     dialogue = null;
