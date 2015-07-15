@@ -15,6 +15,8 @@ function GettingReady() {
 
   var progress;
   var background;
+  var spriteDate;
+  var spriteFriend;
   var DIALOGUE_DISPLAY_TIME = 2000;
 
   function init() {
@@ -154,7 +156,10 @@ function GettingReady() {
   **/
 
   function createDateDialogue(key) {
-    game.add.sprite(game.world.centerX + 150, game.world.centerY - 200, 'datePic');
+    if (!spriteDate) {
+      spriteDate = game.add.sprite(game.world.centerX + 150, game.world.centerY - 200, 'datePic');
+    }
+
     return game.add.sprite(game.world.centerX - 150, game.world.centerY - 250, key);
   }
 
@@ -164,7 +169,10 @@ function GettingReady() {
   **/
 
   function createFriendDialogue(key) {
-    game.add.sprite(game.world.centerX - 350, game.world.centerY - 200, 'friendPic');
+    if (!spriteFriend) {
+      spriteFriend = game.add.sprite(game.world.centerX - 350, game.world.centerY - 200, 'friendPic');
+    }
+
     return game.add.sprite(game.world.centerX - 150, game.world.centerY - 250, key);
   }
 
@@ -304,14 +312,16 @@ function GettingReady() {
    */
   function transitionToNextState() {
     var properties = {alpha: 0};
-    var fadeOutDuration = 2000;
+    var fadeOutDuration = 1500;
     var ease = Phaser.Easing.Linear.None;
     var autoStart = true;
-    var delay = 2000;
+    var delay = 1000;
     var repeat = false;
     var yoyo = false;
 
     game.add.tween(background).to(properties, fadeOutDuration, ease, autoStart, delay, repeat, yoyo);
+    game.add.tween(spriteDate).to(properties, fadeOutDuration, ease, autoStart, delay, repeat, yoyo);
+    game.add.tween(spriteFriend).to(properties, fadeOutDuration, ease, autoStart, delay, repeat, yoyo);
     setTimeout(startNextState, fadeOutDuration + delay);
   }
 
