@@ -235,6 +235,10 @@ function AtDanceGame() {
     var repeat = false;
     var yoyo = false;
 
+    // Disable physics on the player object
+    player.body.enable = false;
+
+    // Fade out sprites
     game.add.tween(background).to(properties, fadeOutDuration, ease, autoStart, delay, repeat, yoyo);
     game.add.tween(enemies).to(properties, fadeOutDuration, ease, autoStart, delay, repeat, yoyo);
     game.add.tween(player).to(properties, fadeOutDuration, ease, autoStart, delay, repeat, yoyo);
