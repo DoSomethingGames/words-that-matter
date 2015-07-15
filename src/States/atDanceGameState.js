@@ -148,7 +148,8 @@ function AtDanceGame() {
     game.physics.arcade.overlap(player, tables, touchItem, null, {type: 'table', itemPickedUp: enemies, dialogueName: 'tableDialogue'});
 
     //checks enemy collisions
-    game.physics.arcade.collide(player, enemies, touchItem, null, {type: 'enemy', itemPickedUp: enemyDialogue, dialogueName: 'enemyDialogue'});
+    game.physics.arcade.collide(player, enemies, touchItem, null,
+      {type: 'enemy', itemPickedUp: enemyDialogue, dialogueName: enemyDialogue[game.rnd.between(0, 2)]});
     //game.physics.arcade.overlap(player, enemies, touchItem, null, {type: 'enemy', itemPickedUp: enemyDialogue, dialogueName: 'enemyDialogue'});
 
     game.physics.arcade.collide(enemies, tables);
@@ -204,7 +205,8 @@ function AtDanceGame() {
       }
     }
     game.paused = true;
-    dialogue = game.add.sprite(game.width/2, game.height/4, this.dialogueName);
+    // 350 and 100 are half the size of the dialogue asset
+    dialogue = game.add.sprite(game.world.centerX - 350, game.world.centerY - 100, this.dialogueName);
     setTimeout(killDialogue, 2000);
     if (this.type != 'item') {
       player.x -= 5;
