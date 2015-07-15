@@ -66,7 +66,7 @@ function BystanderIntervention() {
     game.load.image('luis3', 'assets/bystander-intervention/BI_luis3.png');
     game.load.image('luis4', 'assets/bystander-intervention/BI_luis4.png');
     game.load.image('luis5', 'assets/bystander-intervention/BI_luis5.png');
-    game.load.image('luis6', 'assets/bystander-intervention/BI_luis6.png'); //@todo fix this error
+    game.load.image('luis6', 'assets/bystander-intervention/BI_luis6.png');
 
     //tyrell assets
     game.load.image('tyrellPic', 'assets/tyrell.png');
@@ -346,5 +346,3 @@ function BystanderIntervention() {
       update: update
   }
 }
-
-game.state.add('bystander-intervention', new BystanderIntervention());
