@@ -129,6 +129,8 @@ function AtDanceGame() {
     startButton = game.add.button(game.world.centerX - game.cache.getImage('startButtonImg').width/2, game.world.centerY - game.cache.getImage('startButtonImg').height/2, 'startButtonImg', null, null, 2, 1, 0);
     startButton.inputEnabled = true;
     startButton.events.onInputUp.add(actionOnClick, {selected: 1});
+    startButton.events.onInputOver.add(increaseButtonSize.bind({button: startButton}));
+    startButton.events.onInputOut.add(decreaseButtonSize.bind({button: startButton}));
   }
 
   function update() {
@@ -221,6 +223,45 @@ function AtDanceGame() {
     enemies.forEach(function(couple) { couple.body.velocity.setTo(200); }, this);
     startButton.kill();
     startButton = null;
+  }
+
+  /**
+   * Increases the size of a button. The intent is for this function to be used
+   * as a callback with the `button` variable "binded" to the function.
+   *
+   * ex: button1.events.onInputOver.add(increaseButtonSize.bind({button: button1}))
+   */
+  function increaseButtonSize() {
+    var sizeDelta = 10;
+
+    if (!this.button) {
+      return;
+    }
+
+    this.button.width += sizeDelta;
+    this.button.height += sizeDelta;
+
+    this.button.x -= (sizeDelta / 2);
+    this.button.y -= (sizeDelta / 2);
+  }
+
+  /**
+   * Decreases the size of a button.
+   *
+   * See increaseButtonSize() for more notes on its usage.
+   */
+  function decreaseButtonSize() {
+    var sizeDelta = 10;
+
+    if (!this.button) {
+      return;
+    }
+
+    this.button.width -= sizeDelta;
+    this.button.height -= sizeDelta;
+
+    this.button.x += (sizeDelta / 2);
+    this.button.y += (sizeDelta / 2);
   }
 
   /**
