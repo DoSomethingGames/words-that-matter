@@ -26,6 +26,7 @@ function AtDanceGame() {
   var item2;
   var item3;
   var dialogue;
+  var itemsCount;
 
   function init() {
     BOARD_HEIGHT = 600;
@@ -107,6 +108,7 @@ function AtDanceGame() {
     }
 
     //generating items
+    itemsCount = 3;
     item1 = game.add.sprite(250, 100, 'itemImg1');
     game.physics.arcade.enable(item1);
     item2 = game.add.sprite(550, 200, 'itemImg2');
@@ -191,6 +193,13 @@ function AtDanceGame() {
   function touchItem() {
     if (this.type == 'item') {
       this.itemPickedUp.kill();
+      itemsCount--;
+
+      // If all items have been picked up, move onto next state once the
+      // dialogue box has been killed. See setTimeout(killDialogue) below.
+      if (itemsCount <= 0) {
+        setTimeout(transitionToNextState, 2000);
+      }
     }
     game.paused = true;
     dialogue = game.add.sprite(game.width/2, game.height/4, this.dialogueName);
@@ -212,6 +221,33 @@ function AtDanceGame() {
     enemies.forEach(function(couple) { couple.body.velocity.setTo(200); }, this);
     startButton.kill();
     startButton = null;
+  }
+
+  /**
+   * Begin transition to the next state with a fade out.
+   */
+  function transitionToNextState() {
+    var properties = {alpha: 0};
+    var fadeOutDuration = 2000;
+    var ease = Phaser.Easing.Linear.None;
+    var autoStart = true;
+    var delay = 2000;
+    var repeat = false;
+    var yoyo = false;
+
+    game.add.tween(background).to(properties, fadeOutDuration, ease, autoStart, delay, repeat, yoyo);
+    game.add.tween(enemies).to(properties, fadeOutDuration, ease, autoStart, delay, repeat, yoyo);
+    game.add.tween(player).to(properties, fadeOutDuration, ease, autoStart, delay, repeat, yoyo);
+    game.add.tween(tables).to(properties, fadeOutDuration, ease, autoStart, delay, repeat, yoyo);
+    setTimeout(startNextState, fadeOutDuration + delay);
+  }
+
+  /**
+   * Add and start next state. Starting a new state automatically shuts down the current one.
+   */
+  function startNextState() {
+    game.state.add('bystander-intervention', new BystanderIntervention());
+    game.state.start('bystander-intervention');
   }
 
   return {
