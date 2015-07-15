@@ -335,11 +335,8 @@ function BystanderIntervention() {
    * Add and start next state. Starting a new state automatically shuts down the current one.
    */
   function startNextState() {
-    //game.state.add('at-prom', new AtProm());
-    //game.state.start('at-prom');
-
-    //@@@@@@@ INSERT END CREDITS HERE
-
+    game.state.add('end-screen', new EndScreen());
+    game.state.start('end-screen');
   }
 
   return {
@@ -351,4 +348,3 @@ function BystanderIntervention() {
 }
 
 game.state.add('bystander-intervention', new BystanderIntervention());
-game.state.start('bystander-intervention');
