@@ -6,6 +6,7 @@ function AtDanceGame() {
 
   //game start/end
   var startButton;
+  var instructions;
   var paused;
 
   //table
@@ -48,6 +49,7 @@ function AtDanceGame() {
     //background
     game.load.image('background', 'assets/Backgrounds/ADG_background.png');
 
+    game.load.image('instructions', 'assets/mini-game/ADG_instructions.png');
     game.load.image('startButtonImg', 'assets/mini-game/ADG_startButton.png');
 
     game.load.image('tableImg', 'assets/mini-game/ADG_table.png');
@@ -131,6 +133,8 @@ function AtDanceGame() {
     startButton.events.onInputUp.add(actionOnClick, {selected: 1});
     startButton.events.onInputOver.add(increaseButtonSize.bind({button: startButton}));
     startButton.events.onInputOut.add(decreaseButtonSize.bind({button: startButton}));
+
+    instructions = game.add.sprite(game.world.centerX - game.cache.getImage('instructions').width/2, 10, 'instructions');
   }
 
   function update() {
@@ -225,6 +229,9 @@ function AtDanceGame() {
     enemies.forEach(function(couple) { couple.body.velocity.setTo(200); }, this);
     startButton.kill();
     startButton = null;
+
+    instructions.kill();
+    instructions = null;
   }
 
   /**
