@@ -1,16 +1,19 @@
 function GettingReady() {
 
   // These are the actual sprites and buttons that will be created and destroyed as the dialogue progresses
-  var choiceButton1, choiceButton2, dateDialogue, friendDialogue;
+  var choiceButton1, choiceButton2, dateDialogue, friendDialogue, narrative;
   
   var dialogueTree = [
-    {type: 'friend', msg: 'friend1', delay: -1, duration: -1},
-    {type: 'date', msg: 'date1', delay: -1, duration: -1},
-    {type: 'date', msg: 'date2', delay: -1, duration: -1},
-    {type: 'friend', msg: 'friend2', delay: -1, duration: -1},
-    {type: 'friend', msg: 'friend3', delay: -1, duration: -1},
-    {type: 'date', msg: 'date3', delay: -1, duration: -1},
-    {type: 'choice', msg: 0, delay: -1, duration: -1}, 
+    {type: 'narrative', msg: 'narrative1'},
+    {type: 'narrative', msg: 'narrative2'},
+    {type: 'narrative', msg: 'narrative3'},
+    {type: 'friend', msg: 'friend1'},
+    {type: 'date', msg: 'date1'},
+    {type: 'date', msg: 'date2'},
+    {type: 'friend', msg: 'friend2'},
+    {type: 'friend', msg: 'friend3'},
+    {type: 'date', msg: 'date3'},
+    {type: 'choice', msg: 0} 
     ];
 
   var progress;
@@ -18,6 +21,7 @@ function GettingReady() {
   var spriteDate;
   var spriteFriend;
   var DIALOGUE_DISPLAY_TIME = 2000;
+  var NARRATIVE_DISPLAY_TIME = 4500;
 
   function init() {
     progress = 0;
@@ -32,6 +36,11 @@ function GettingReady() {
 
     //background
     game.load.image('background', 'assets/Backgrounds/getting-ready-bkgrd.png');
+
+    //narrative assets
+    game.load.image('narrative1', 'assets/getting-ready/GR_narrative1.png');
+    game.load.image('narrative2', 'assets/getting-ready/GR_narrative2.png');
+    game.load.image('narrative3', 'assets/getting-ready/GR_narrative3.png');
 
     //player assets
     game.load.image('choice1a', 'assets/getting-ready/GR_choice1a.png');
@@ -48,7 +57,6 @@ function GettingReady() {
     game.load.image('friend1', 'assets/getting-ready/GR_friend1.png');
     game.load.image('friend2', 'assets/getting-ready/GR_friend2.png');
     game.load.image('friend3', 'assets/getting-ready/GR_friend3.png');
-    //game.load.image('friend4', 'assets/getting-ready/GR_friend4.png');
 
   }
 
@@ -177,6 +185,15 @@ function GettingReady() {
   }
 
   /**
+   * createNarrative: [asset key] -> void 
+   * adds narrative sprite corresponding to asset key to the screen 
+  **/
+
+  function createNarrative(key) {
+    return game.add.sprite(game.world.centerX - 350, game.world.centerY + 100, key);
+  }
+
+  /**
    * displayNext: void -> void
    * function iterates through dialogueTree and checks 'type' tag in order to display friend/date dialogue or choice buttons.
    */
@@ -188,6 +205,10 @@ function GettingReady() {
     
     if (friendDialogue) {
       friendDialogue.destroy();
+    }
+
+    if (narrative) {
+      narrative.destroy();
     }
 
     if (progress >= dialogueTree.length) {
@@ -212,24 +233,6 @@ function GettingReady() {
           key1 = 'choice2a';
           key2 = 'choice2b';
           console.log('c2');
-          break;
-
-        case 2:
-          key1 = 'choice3a';
-          key2 = 'choice3b';
-          console.log('c3');
-          break;
-
-        case 3:
-          key1 = 'choice4a';
-          key2 = 'choice4b';
-          console.log('c4');
-          break;
-
-        case 4:
-          key1 = 'choice5a';
-          key2 = 'choice5b';
-          console.log('c5');
           break;
 
         default:
@@ -257,6 +260,11 @@ function GettingReady() {
       choiceButton2.events.onInputOver.add(increaseButtonSize.bind({button: choiceButton2}));
       choiceButton2.events.onInputOut.add(decreaseButtonSize.bind({button: choiceButton2}));
     }
+    else if (dialogueTree[progress].type == 'narrative') {
+      narrative = createNarrative(dialogueTree[progress].msg);
+      setTimeout(displayNext, NARRATIVE_DISPLAY_TIME);
+      console.log('narrative');
+    }
     else if (dialogueTree[progress].type == 'date') {
       dateDialogue = createDateDialogue(dialogueTree[progress].msg);
       setTimeout(displayNext, DIALOGUE_DISPLAY_TIME);
@@ -280,15 +288,6 @@ function GettingReady() {
    * clears the screen of all buttons and/or dialogue, resets all to null, and then displays the next dialogue
    */
   function onChoiceSelected() {
-
-    // if (dateDialogue) {
-    //   dateDialogue.destroy();
-    // }
-    
-    // if (friendDialogue) {
-    //   friendDialogue.destroy();
-    // }
-
     if (choiceButton1) {
       choiceButton1.destroy();
     }
