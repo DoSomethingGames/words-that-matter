@@ -67,7 +67,7 @@ function AtDanceGame() {
     game.load.image('enemyDialogue1', 'assets/mini-game/enemyDialogue1.png');
     game.load.image('enemyDialogue2', 'assets/mini-game/enemyDialogue2.png');
     game.load.image('enemyDialogue3', 'assets/mini-game/enemyDialogue3.png');
-    game.load.image('tableDialogue', 'assets/mini-game/ADG_couple.png');
+    game.load.image('tableDialogue', 'assets/mini-game/tableDialogue.png');
   }
 
   function create() {
@@ -150,6 +150,9 @@ function AtDanceGame() {
     //checks enemy collisions
     game.physics.arcade.collide(player, enemies, touchItem, null,
       {type: 'enemy', itemPickedUp: enemyDialogue, dialogueName: enemyDialogue[game.rnd.between(0, 2)]});
+
+    //@todo:change it so the enemy dialogue chooses randomly for each individual collision 
+
     //game.physics.arcade.overlap(player, enemies, touchItem, null, {type: 'enemy', itemPickedUp: enemyDialogue, dialogueName: 'enemyDialogue'});
 
     game.physics.arcade.collide(enemies, tables);
