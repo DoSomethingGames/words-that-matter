@@ -1,34 +1,40 @@
 function AtProm() {
 
-  // These are the actual sprites and buttons that will be created and destroyed as the dialogue progresses
-  var choiceButton1, choiceButton2, dateDialogue, friendDialogue, narrative;
-  var spriteDate;
-  var spriteFriend;
-  var spriteBackground;
+  var DEFAULT_DIALOGUE_DISPLAY_TIME = 3000;
+  var DEFAULT_NARRATIVE_DISPLAY_TIME = 6000;
   
   var dialogueTree = [
-    {type: 'narrative', msg: 'narrative1', delay: -1, duration: -1},
-    {type: 'narrative', msg: 'narrative2', delay: -1, duration: -1},
-    {type: 'narrative', msg: 'narrative3', delay: -1, duration: -1},
-    {type: 'narrative', msg: 'narrative4', delay: -1, duration: -1},
-    {type: 'choice', msg: 0, delay: -1, duration: -1}, 
-    {type: 'date', msg: 'date1', delay: -1, duration: -1},
-    {type: 'choice', msg: 1, delay: -1, duration: -1}, 
-    {type: 'friend', msg: 'friend1', delay: -1, duration: -1},
-    {type: 'friend', msg: 'friend2', delay: -1, duration: -1}, 
-    {type: 'date', msg: 'date2', delay: -1, duration: -1},  
-    {type: 'date', msg: 'date3', delay: -1, duration: -1},
-    {type: 'choice', msg: 2, delay: -1, duration: -1},
-    {type: 'friend', msg: 'friend3', delay: -1, duration: -1},
-    {type: 'date', msg: 'date4', delay: -1, duration: -1},
-    {type: 'choice', msg: 3, delay: -1, duration: -1},
-    {type: 'date', msg: 'date5', delay: -1, duration: -1},
-    {type: 'choice', msg: 4, delay: -1, duration: -1}
+    {type: 'narrative', msg: 'narrative1', duration: DEFAULT_NARRATIVE_DISPLAY_TIME},
+    {type: 'narrative', msg: 'narrative2', duration: 3000},
+    {type: 'narrative', msg: 'narrative3', duration: DEFAULT_NARRATIVE_DISPLAY_TIME},
+    {type: 'narrative', msg: 'narrative4', duration: DEFAULT_NARRATIVE_DISPLAY_TIME},
+    {type: 'choice', msg: 0},
+    {type: 'date', msg: 'date1', duration: DEFAULT_DIALOGUE_DISPLAY_TIME},
+    {type: 'choice', msg: 1},
+    {type: 'friend', msg: 'friend1', duration: DEFAULT_DIALOGUE_DISPLAY_TIME},
+    {type: 'friend', msg: 'friend2', duration: DEFAULT_DIALOGUE_DISPLAY_TIME},
+    {type: 'date', msg: 'date2', duration: DEFAULT_DIALOGUE_DISPLAY_TIME},
+    {type: 'date', msg: 'date3', duration: DEFAULT_DIALOGUE_DISPLAY_TIME},
+    {type: 'choice', msg: 2},
+    {type: 'friend', msg: 'friend3', duration: DEFAULT_DIALOGUE_DISPLAY_TIME},
+    {type: 'date', msg: 'date4', duration: DEFAULT_DIALOGUE_DISPLAY_TIME},
+    {type: 'choice', msg: 3},
+    {type: 'date', msg: 'date5', duration: DEFAULT_DIALOGUE_DISPLAY_TIME},
+    {type: 'choice', msg: 4}
     ];
 
   var progress;
-  var DIALOGUE_DISPLAY_TIME = 2000;
-  var NARRATIVE_DISPLAY_TIME = 3000;
+
+  // These are the actual sprites and buttons that will be created and
+  // destroyed as the dialogue progresses.
+  var choiceButton1;
+  var choiceButton2;
+  var dateDialogue;
+  var friendDialogue;
+  var narrative;
+  var spriteDate;
+  var spriteFriend;
+  var spriteBackground;
 
   function init() {
     progress = 0;
@@ -81,16 +87,27 @@ function AtProm() {
   console.log('loaded assets');
 
   function create() {
+    var properties;
+    var fadeInDuration;
+    var ease;
+    var autoStart;
+    var delay;
+    var repeat;
+    var yoyo;
 
-    console.log('in create');
-
-    //game.stage.backgroundColor = 'background';
     spriteBackground = game.add.tileSprite(0, 0, 800, 600, 'background');
+    spriteBackground.alpha = 0;
 
-    //game.add.sprite(game.world.centerX - 350, game.world.centerY - 200, 'friendPic');
-    //game.add.sprite(game.world.centerX + 150, game.world.centerY - 200, 'datePic');
+    properties = {alpha: 1};
+    fadeInDuration = 2000;
+    ease = Phaser.Easing.Linear.None;
+    autoStart = true;
+    delay = 0;
+    repeat = 0;
+    yoyo = false;
+    game.add.tween(spriteBackground).to(properties, fadeInDuration, ease, autoStart, delay, repeat, yoyo);
 
-    displayNext();
+    setTimeout(displayNext, fadeInDuration);
   }
 
   function update() {}
@@ -283,18 +300,15 @@ function AtProm() {
     }
     else if (dialogueTree[progress].type == 'date') {
       dateDialogue = createDateDialogue(dialogueTree[progress].msg);
-      setTimeout(displayNext, DIALOGUE_DISPLAY_TIME);
-      console.log('date');
+      setTimeout(displayNext, dialogueTree[progress].duration);
     }
     else if (dialogueTree[progress].type == 'friend') {
       friendDialogue = createFriendDialogue(dialogueTree[progress].msg);
-      setTimeout(displayNext, DIALOGUE_DISPLAY_TIME);
-      console.log('friend');
+      setTimeout(displayNext, dialogueTree[progress].duration);
     }
     else if (dialogueTree[progress].type == 'narrative') {
       narrative = createNarrative(dialogueTree[progress].msg);
-      setTimeout(displayNext, NARRATIVE_DISPLAY_TIME);
-      console.log('narrative');
+      setTimeout(displayNext, dialogueTree[progress].duration);
     }
 
     else {
@@ -356,7 +370,8 @@ function AtProm() {
     game.add.tween(spriteBackground).to(properties, fadeOutDuration, ease, autoStart, delay, repeat, yoyo);
     game.add.tween(spriteDate).to(properties, fadeOutDuration, ease, autoStart, delay, repeat, yoyo);
     game.add.tween(spriteFriend).to(properties, fadeOutDuration, ease, autoStart, delay, repeat, yoyo);
-    setTimeout(startNextState, fadeOutDuration + delay);
+    // 250ms buffer to avoid flicker problem
+    setTimeout(startNextState, fadeOutDuration + delay - 250);
   }
 
   /**

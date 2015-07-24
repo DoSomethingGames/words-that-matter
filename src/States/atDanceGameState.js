@@ -139,21 +139,21 @@ function AtDanceGame() {
 
   function update() {
     //item disappears when touched and brings up dialogue
-    game.physics.arcade.collide(player, item1, touchItem, null, {type: 'item', itemPickedUp: item1, dialogueName: 'itemDialogue1'});
-    game.physics.arcade.collide(player, item2, touchItem, null, {type: 'item', itemPickedUp: item2, dialogueName: 'itemDialogue2'});
-    game.physics.arcade.collide(player, item3, touchItem, null, {type: 'item', itemPickedUp: item3, dialogueName: 'itemDialogue3'});
+    game.physics.arcade.collide(player, item1, touchItem, null, {type: 'item', itemPickedUp: item1, dialogueName: 'itemDialogue1', duration: 6000});
+    game.physics.arcade.collide(player, item2, touchItem, null, {type: 'item', itemPickedUp: item2, dialogueName: 'itemDialogue2', duration: 6000});
+    game.physics.arcade.collide(player, item3, touchItem, null, {type: 'item', itemPickedUp: item3, dialogueName: 'itemDialogue3', duration: 2500});
 
-    game.physics.arcade.overlap(player, item1, touchItem, null, {type: 'item', itemPickedUp: item1, dialogueName: 'itemDialogue1'});
-    game.physics.arcade.overlap(player, item2, touchItem, null, {type: 'item', itemPickedUp: item2, dialogueName: 'itemDialogue2'});
-    game.physics.arcade.overlap(player, item3, touchItem, null, {type: 'item', itemPickedUp: item3, dialogueName: 'itemDialogue3'});
+    game.physics.arcade.overlap(player, item1, touchItem, null, {type: 'item', itemPickedUp: item1, dialogueName: 'itemDialogue1', duration: 6000});
+    game.physics.arcade.overlap(player, item2, touchItem, null, {type: 'item', itemPickedUp: item2, dialogueName: 'itemDialogue2', duration: 6000});
+    game.physics.arcade.overlap(player, item3, touchItem, null, {type: 'item', itemPickedUp: item3, dialogueName: 'itemDialogue3', duration: 2500});
 
     //checks table collisions
-    game.physics.arcade.collide(player, tables, touchItem, null, {type: 'table', itemPickedUp: tables, dialogueName: 'tableDialogue'});
-    game.physics.arcade.overlap(player, tables, touchItem, null, {type: 'table', itemPickedUp: enemies, dialogueName: 'tableDialogue'});
+    game.physics.arcade.collide(player, tables, touchItem, null, {type: 'table', itemPickedUp: tables, dialogueName: 'tableDialogue', duration: 2000});
+    game.physics.arcade.overlap(player, tables, touchItem, null, {type: 'table', itemPickedUp: enemies, dialogueName: 'tableDialogue', duration: 2000});
 
     //checks enemy collisions
     game.physics.arcade.collide(player, enemies, touchItem, null,
-      {type: 'enemy', itemPickedUp: enemyDialogue, dialogueName: enemyDialogue[game.rnd.between(0, 2)]});
+      {type: 'enemy', itemPickedUp: enemyDialogue, dialogueName: enemyDialogue[game.rnd.between(0, 2)], duration: 2000});
 
     //@todo:change it so the enemy dialogue chooses randomly for each individual collision 
 
@@ -208,14 +208,14 @@ function AtDanceGame() {
       // If all items have been picked up, move onto next state once the
       // dialogue box has been killed. See setTimeout(killDialogue) below.
       if (itemsCount <= 0) {
-        setTimeout(transitionToNextState, 2000);
+        transitionToNextState();
       }
     }
     game.paused = true;
     player.body.enable = false;
     // 350 and 100 are half the size of the dialogue asset
     dialogue = game.add.sprite(game.world.centerX - 350, game.world.centerY - 100, this.dialogueName);
-    setTimeout(killDialogue, 2000);
+    setTimeout(killDialogue, this.duration);
     if (this.type != 'item') {
       player.x -= 5;
       player.y -= 5;
@@ -223,7 +223,7 @@ function AtDanceGame() {
   }
 
   function killDialogue() {
-  	setTimeout(function enablePhysics() {player.body.enable = true;}, 200);
+  	setTimeout(function enablePhysics() {player.body.enable = true;}, 1000);
     game.paused = false;
     dialogue.kill();
     dialogue = null;
@@ -298,7 +298,7 @@ function AtDanceGame() {
     game.add.tween(enemies).to(properties, fadeOutDuration, ease, autoStart, delay, repeat, yoyo);
     game.add.tween(player).to(properties, fadeOutDuration, ease, autoStart, delay, repeat, yoyo);
     game.add.tween(tables).to(properties, fadeOutDuration, ease, autoStart, delay, repeat, yoyo);
-    setTimeout(startNextState, fadeOutDuration + delay);
+    setTimeout(startNextState, fadeOutDuration + delay - 250);
   }
 
   /**
