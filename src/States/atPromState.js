@@ -87,16 +87,27 @@ function AtProm() {
   console.log('loaded assets');
 
   function create() {
+    var properties;
+    var fadeInDuration;
+    var ease;
+    var autoStart;
+    var delay;
+    var repeat;
+    var yoyo;
 
-    console.log('in create');
-
-    //game.stage.backgroundColor = 'background';
     spriteBackground = game.add.tileSprite(0, 0, 800, 600, 'background');
+    spriteBackground.alpha = 0;
 
-    //game.add.sprite(game.world.centerX - 350, game.world.centerY - 200, 'friendPic');
-    //game.add.sprite(game.world.centerX + 150, game.world.centerY - 200, 'datePic');
+    properties = {alpha: 1};
+    fadeInDuration = 2000;
+    ease = Phaser.Easing.Linear.None;
+    autoStart = true;
+    delay = 0;
+    repeat = 0;
+    yoyo = false;
+    game.add.tween(spriteBackground).to(properties, fadeInDuration, ease, autoStart, delay, repeat, yoyo);
 
-    displayNext();
+    setTimeout(displayNext, fadeInDuration);
   }
 
   function update() {}
