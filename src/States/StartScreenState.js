@@ -78,14 +78,16 @@ function StartScreen() {
     var fadeOutDuration = 2000;
     var ease = Phaser.Easing.Linear.None;
     var autoStart = true;
-    var delay = 2000;
+    var delay = 500;
     var repeat = false;
     var yoyo = false;
 
     startButton.kill();
 
     game.add.tween(background).to(properties, fadeOutDuration, ease, autoStart, delay, repeat, yoyo);
-    setTimeout(startNextState, fadeOutDuration + delay);
+
+    // Starting next state shortly before fade out is complete. Should fix flicker problem.
+    setTimeout(startNextState, fadeOutDuration + delay - 250);
   }
 
   /**

@@ -1,18 +1,17 @@
 function GettingReady() {
 
-  // These are the actual sprites and buttons that will be created and destroyed as the dialogue progresses
-  var choiceButton1, choiceButton2, dateDialogue, friendDialogue, narrative;
+  var DEFAULT_DIALOGUE_DISPLAY_TIME = 3000;
   
   var dialogueTree = [
-    {type: 'narrative', msg: 'narrative1'},
-    {type: 'narrative', msg: 'narrative2'},
-    {type: 'narrative', msg: 'narrative3'},
-    {type: 'friend', msg: 'friend1'},
-    {type: 'date', msg: 'date1'},
-    {type: 'date', msg: 'date2'},
-    {type: 'friend', msg: 'friend2'},
-    {type: 'friend', msg: 'friend3'},
-    {type: 'date', msg: 'date3'},
+    {type: 'narrative', msg: 'narrative1', duration: 5000},
+    {type: 'narrative', msg: 'narrative2', duration: 8000},
+    {type: 'narrative', msg: 'narrative3', duration: 7000},
+    {type: 'friend', msg: 'friend1', duration: DEFAULT_DIALOGUE_DISPLAY_TIME},
+    {type: 'date', msg: 'date1', duration: DEFAULT_DIALOGUE_DISPLAY_TIME},
+    {type: 'date', msg: 'date2', duration: DEFAULT_DIALOGUE_DISPLAY_TIME},
+    {type: 'friend', msg: 'friend2', duration: DEFAULT_DIALOGUE_DISPLAY_TIME},
+    {type: 'friend', msg: 'friend3', duration: DEFAULT_DIALOGUE_DISPLAY_TIME},
+    {type: 'date', msg: 'date3', duration: DEFAULT_DIALOGUE_DISPLAY_TIME},
     {type: 'choice', msg: 0} 
     ];
 
@@ -20,8 +19,14 @@ function GettingReady() {
   var background;
   var spriteDate;
   var spriteFriend;
-  var DIALOGUE_DISPLAY_TIME = 2000;
-  var NARRATIVE_DISPLAY_TIME = 4500;
+
+  // These are the actual sprites and buttons that will be created and
+  // destroyed as the dialogue progresses.
+  var choiceButton1;
+  var choiceButton2;
+  var dateDialogue;
+  var friendDialogue;
+  var narrative;
 
   function init() {
     progress = 0;
@@ -60,8 +65,6 @@ function GettingReady() {
 
   }
 
-  console.log('loaded assets');
-
   function create() {
     var bg;
     var properties;
@@ -71,8 +74,6 @@ function GettingReady() {
     var delay;
     var repeat;
     var yoyo;
-
-    console.log('in create');
 
     background = game.add.tileSprite(0, 0, 800, 600, 'background');
 
@@ -262,18 +263,15 @@ function GettingReady() {
     }
     else if (dialogueTree[progress].type == 'narrative') {
       narrative = createNarrative(dialogueTree[progress].msg);
-      setTimeout(displayNext, NARRATIVE_DISPLAY_TIME);
-      console.log('narrative');
+      setTimeout(displayNext, dialogueTree[progress].duration);
     }
     else if (dialogueTree[progress].type == 'date') {
       dateDialogue = createDateDialogue(dialogueTree[progress].msg);
-      setTimeout(displayNext, DIALOGUE_DISPLAY_TIME);
-      console.log('date');
+      setTimeout(displayNext, dialogueTree[progress].duration);
     }
     else if (dialogueTree[progress].type == 'friend') {
       friendDialogue = createFriendDialogue(dialogueTree[progress].msg);
-      setTimeout(displayNext, DIALOGUE_DISPLAY_TIME);
-      console.log('friend');
+      setTimeout(displayNext, dialogueTree[progress].duration);
     }
     else {
       console.log('unable to match type');
@@ -321,7 +319,8 @@ function GettingReady() {
     game.add.tween(background).to(properties, fadeOutDuration, ease, autoStart, delay, repeat, yoyo);
     game.add.tween(spriteDate).to(properties, fadeOutDuration, ease, autoStart, delay, repeat, yoyo);
     game.add.tween(spriteFriend).to(properties, fadeOutDuration, ease, autoStart, delay, repeat, yoyo);
-    setTimeout(startNextState, fadeOutDuration + delay);
+    // 250ms buffer to avoid flicker problem
+    setTimeout(startNextState, fadeOutDuration + delay - 250);
   }
 
   /**
