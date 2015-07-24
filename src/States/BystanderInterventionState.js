@@ -1,34 +1,42 @@
 function BystanderIntervention() {
 
-  // These are the actual sprites and buttons that will be created and destroyed as the dialogue progresses
-  var choiceButton1, choiceButton2, luisDialogue, tyrellDialogue, narrative;
+  var DEFAULT_DIALOGUE_DISPLAY_TIME = 3000;
+  var DEFAULT_NARRATIVE_DISPLAY_TIME = 5000;
   
   var dialogueTree = [
-    {type: 'narrative', msg: 'narrative1'},
-    {type: 'narrative', msg: 'narrative2'},
-    {type: 'narrative', msg: 'narrative3'},
-    {type: 'narrative', msg: 'narrative4'},
-    {type: 'narrative', msg: 'narrative5'},
-    {type: 'tyrell', msg: 'tyrell1'},
-    {type: 'luis', msg: 'luis1'},
-    {type: 'luis', msg: 'luis2'},
-    {type: 'tyrell', msg: 'tyrell2'},
-    {type: 'luis', msg: 'luis3'},
-    {type: 'tyrell', msg: 'tyrell3'},
-    {type: 'luis', msg: 'luis4'},
+    {type: 'narrative', msg: 'narrative1', duration: DEFAULT_NARRATIVE_DISPLAY_TIME},
+    {type: 'narrative', msg: 'narrative2', duration: DEFAULT_NARRATIVE_DISPLAY_TIME},
+    {type: 'narrative', msg: 'narrative3', duration: DEFAULT_NARRATIVE_DISPLAY_TIME},
+    {type: 'narrative', msg: 'narrative4', duration: DEFAULT_NARRATIVE_DISPLAY_TIME},
+    {type: 'narrative', msg: 'narrative5', duration: DEFAULT_NARRATIVE_DISPLAY_TIME},
+    {type: 'tyrell', msg: 'tyrell1', duration: DEFAULT_DIALOGUE_DISPLAY_TIME},
+    {type: 'luis', msg: 'luis1', duration: DEFAULT_DIALOGUE_DISPLAY_TIME},
+    {type: 'luis', msg: 'luis2', duration: DEFAULT_DIALOGUE_DISPLAY_TIME},
+    {type: 'tyrell', msg: 'tyrell2', duration: DEFAULT_DIALOGUE_DISPLAY_TIME},
+    {type: 'luis', msg: 'luis3', duration: DEFAULT_DIALOGUE_DISPLAY_TIME},
+    {type: 'tyrell', msg: 'tyrell3', duration: DEFAULT_DIALOGUE_DISPLAY_TIME},
+    {type: 'luis', msg: 'luis4', duration: DEFAULT_DIALOGUE_DISPLAY_TIME},
     {type: 'choice', msg: 0},
-    {type: 'tyrell', msg: 'tyrell4'},
-    {type: 'tyrell', msg: 'tyrell5'},
+    {type: 'tyrell', msg: 'tyrell4', duration: DEFAULT_DIALOGUE_DISPLAY_TIME},
+    {type: 'tyrell', msg: 'tyrell5', duration: DEFAULT_DIALOGUE_DISPLAY_TIME},
     {type: 'choice', msg: 1},
-    {type: 'luis', msg: 'luis5'},
-    {type: 'luis', msg: 'luis6'},
-    {type: 'tyrell', msg: 'tyrell6'}
+    {type: 'luis', msg: 'luis5', duration: DEFAULT_DIALOGUE_DISPLAY_TIME},
+    {type: 'luis', msg: 'luis6', duration: DEFAULT_DIALOGUE_DISPLAY_TIME},
+    {type: 'tyrell', msg: 'tyrell6', duration: DEFAULT_DIALOGUE_DISPLAY_TIME}
     ];
 
   var progress;
   var background;
-  var DIALOGUE_DISPLAY_TIME = 2000;
-  var NARRATIVE_DISPLAY_TIME = 2000;
+
+  // These are the actual sprites and buttons that will be created and
+  // destroyed as the dialogue progresses.
+  var choiceButton1;
+  var choiceButton2;
+  var luisDialogue;
+  var tyrellDialogue;
+  var spriteLuis;
+  var spriteTyrell;
+  var narrative;
 
   function init() {
     progress = 0;
@@ -50,8 +58,6 @@ function BystanderIntervention() {
     game.load.image('narrative3', 'assets/bystander-intervention/PP_narrative3.png');
     game.load.image('narrative4', 'assets/bystander-intervention/PP_narrative4.png');
     game.load.image('narrative5', 'assets/bystander-intervention/PP_narrative5.png');
-
-
 
     //player assets
     game.load.image('choice1a', 'assets/bystander-intervention/BI_choice1a.png');
@@ -78,8 +84,6 @@ function BystanderIntervention() {
     game.load.image('tyrell6', 'assets/bystander-intervention/BI_tyrell6.png');
   }
 
-  console.log('loaded assets');
-
   function create() {
     var bg;
     var properties;
@@ -89,8 +93,6 @@ function BystanderIntervention() {
     var delay;
     var repeat;
     var yoyo;
-
-    console.log('in create');
 
     background = game.add.tileSprite(0, 0, 800, 600, 'background');
 
@@ -177,30 +179,33 @@ function BystanderIntervention() {
   }
 
   /**
-   * createDateDialogue: [asset key] -> void
+   * createLuisDialogue: [asset key] -> void
    * adds a button to the current state, using the asset key as the image
-  **/
-
+   */
   function createLuisDialogue(key) {
-    game.add.sprite(game.world.centerX + 150, game.world.centerY - 200, 'luisPic');
+    if (!spriteLuis) {
+      spriteLuis = game.add.sprite(game.world.centerX + 150, game.world.centerY - 200, 'luisPic');
+    }
+
     return game.add.sprite(game.world.centerX - 150, game.world.centerY - 250, key);
   }
 
   /**
-   * createFriendDialogue: [asset key] -> void
+   * createTyrellDialogue: [asset key] -> void
    * adds a button to the current state, using the asset key as the image
-  **/
-
+   */
   function createTyrellDialogue(key) {
-    game.add.sprite(game.world.centerX - 350, game.world.centerY - 200, 'tyrellPic');
+    if (!spriteTyrell) {
+      spriteTyrell = game.add.sprite(game.world.centerX - 350, game.world.centerY - 200, 'tyrellPic');
+    }
+
     return game.add.sprite(game.world.centerX - 150, game.world.centerY - 250, key);
   }
 
   /**
    * createNarrative: [asset key] -> void 
    * adds narrative sprite corresponding to asset key to the screen 
-  **/
-
+   */
   function createNarrative(key) {
     return game.add.sprite(game.world.centerX - 350, game.world.centerY + 100, key);
   }
@@ -273,16 +278,16 @@ function BystanderIntervention() {
     }
     else if (dialogueTree[progress].type == 'narrative') {
       narrative = createNarrative(dialogueTree[progress].msg);
-      setTimeout(displayNext, NARRATIVE_DISPLAY_TIME);
+      setTimeout(displayNext, dialogueTree[progress].duration);
       console.log('narrative');
     }
     else if (dialogueTree[progress].type == 'luis') {
       luisDialogue = createLuisDialogue(dialogueTree[progress].msg);
-      setTimeout(displayNext, DIALOGUE_DISPLAY_TIME);
+      setTimeout(displayNext, dialogueTree[progress].duration);
     }
     else if (dialogueTree[progress].type == 'tyrell') {
       tyrellDialogue = createTyrellDialogue(dialogueTree[progress].msg);
-      setTimeout(displayNext, DIALOGUE_DISPLAY_TIME);
+      setTimeout(displayNext, dialogueTree[progress].duration);
     }
     else {
       console.log('unable to match type');
@@ -320,15 +325,18 @@ function BystanderIntervention() {
    */
   function transitionToNextState() {
     var properties = {alpha: 0};
-    var fadeOutDuration = 2000;
+    var fadeOutDuration = 1500;
     var ease = Phaser.Easing.Linear.None;
     var autoStart = true;
-    var delay = 2000;
+    var delay = 1000;
     var repeat = false;
     var yoyo = false;
 
     game.add.tween(background).to(properties, fadeOutDuration, ease, autoStart, delay, repeat, yoyo);
-    setTimeout(startNextState, fadeOutDuration + delay);
+    game.add.tween(spriteLuis).to(properties, fadeOutDuration, ease, autoStart, delay, repeat, yoyo);
+    game.add.tween(spriteTyrell).to(properties, fadeOutDuration, ease, autoStart, delay, repeat, yoyo);
+    // 250ms buffer to fix flicker problem
+    setTimeout(startNextState, fadeOutDuration + delay - 250);
   }
 
   /**
