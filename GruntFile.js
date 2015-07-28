@@ -24,7 +24,11 @@ module.exports = function (grunt) {
         files: [
           {src: ['src/index.html'], dest: 'deploy/index.html'},
           {cwd: 'src/css', src: '**/*', dest: 'deploy/css', expand: true},
-          {cwd: 'src/assets', src: '**/*', dest: 'deploy/assets', expand: true}
+          {cwd: 'src/assets', src: '**/*', dest: 'deploy/assets', expand: true},
+          {cwd: 'node_modules/dosomething-neue/dist/assets', src: '**/*', dest: 'deploy/vendor/assets', expand: true},
+          {src: ['node_modules/dosomething-neue/dist/modernizr.js'], dest: 'deploy/vendor/modernizr.js'},
+          {src: ['node_modules/dosomething-neue/dist/neue.js'], dest: 'deploy/vendor/neue.js'},
+          {src: ['node_modules/dosomething-neue/dist/neue.css'], dest: 'deploy/vendor/neue.css'}
         ]
       }
     },
