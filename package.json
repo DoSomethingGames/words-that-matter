@@ -8,6 +8,9 @@
   },
   "repository": "http://github.com/DoSomethingGames/phaser-project-template",
   "license": "MIT",
+  "dependencies": {
+    "dosomething-neue": "^6.4.0"
+  },
   "devDependencies": {
     "grunt": "~0.4.2",
     "grunt-contrib-clean": "^0.6.0",
