@@ -30,7 +30,7 @@ function EndScreen() {
     game.load.image('fact4', 'assets/end-screen/ES_fact4.png');
 
     // @TODO change this asset to a "GET INVOLVED" button or something similar
-    game.load.image('button', 'assets/playButton.png');
+    game.load.image('button', 'assets/end-screen/ES_cta.png');
   }
 
   function create() {
@@ -72,7 +72,7 @@ function EndScreen() {
    * Show button to scroll to the register form.
    */
   function showButton() {
-    button = game.add.button(game.world.centerX - 150, game.world.centerY - 100, 'button', null, null, 2, 1, 0);
+    button = game.add.button(game.world.centerX - 300, game.world.centerY - 50, 'button', null, null, 2, 1, 0);
     button.alpha = 0;
     button.inputEnabled = true;
     button.events.onInputUp.add(onButtonClick);
@@ -92,6 +92,7 @@ function EndScreen() {
     $('html, body').animate({
       scrollTop: $('#register-container').offset().top
     }, 1000);
+    $('#first_name').focus();
   }
 
   /**
