@@ -5,12 +5,24 @@
     <meta charset="utf-8" />
     <title>Words That Matter</title>
     <link rel="stylesheet" href="css/game.css" type="text/css" />
+    <link rel="stylesheet" href="vendor/neue.css" type="text/css" />
     <script src="//cdn.jsdelivr.net/phaser/2.3.0/phaser.js"></script>
+    <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
     <script src="js/game.js"></script>
-    <!--<script src="src/game/main.js"></script>
-    <script src="src/States/atPromState.js"></script> -->
+    <script src="vendor/modernizr.js"></script>
+    <script src="vendor/neue.js"></script>
 </head>
 <body>
 <div id="game"></div>
+<div id="register-container">
+  <p>Learn ways you can change the statistic. Plus, we'll keep you updated when new DoSomething.org games become available.</p>
+  <div id="register-form">
+    <label for="first_name" class="field-label">First Name</label>
+    <input placeholder="What's your name?" name="first_name" type="text" id="first_name" class="text-field"/>
+    <label for="phone" class="field-label">Cell Number</label>
+    <input placeholder="555-555-5555" name="phone" type="text" id="phone" class="text-field"/>
+    <input id="register-button" class="button -primary" value="Give Me More" onclick="registerSubmit()"/>
+  </div>
+</div>
 </body>
 </html>

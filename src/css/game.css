@@ -3,6 +3,23 @@
     margin: 0;
     padding: 0;
 }
+
 #game canvas {
     margin: 0 auto;
+}
+
+#register-button {
+  margin-top: 1em;
+}
+
+#register-container {
+  display: none;
+  margin: auto;
+  margin-bottom: 20em;
+  margin-top: 3em;
+  max-width: 400px;
+}
+
+#register-form {
+  margin-top: 1em;
 }
