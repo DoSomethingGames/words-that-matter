@@ -59,7 +59,7 @@ Make sure you are using the most recent version of Phaser. Go to the Phaser gith
 
 Also, if you are lost or need some point of reference go through <a target="_blank" href="http://gametest.mobi/phaser/">each of the tests</a> in the Phaser project to see how things work until more of the framework is documented.
 
-**Adapted from Jesse Freeman's readme**
+*Adapted from Jesse Freeman's readme*
 
 ## Deployment
 
