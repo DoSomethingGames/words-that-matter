@@ -53,6 +53,7 @@ function EndScreen() {
 
     if (progress >= factTree.length) {
       setTimeout(showButton, 5000);
+      setTimeout(showDanceStats, 8000);
     }
     else {
       //progress to next
@@ -66,6 +67,49 @@ function EndScreen() {
 
       setTimeout(displayNext, 1000 + delay);
     }
+  }
+
+  /**
+   * Display some stats on how the dance scene went.
+   */
+  function showDanceStats() {
+    var statMsg;
+    var style;
+    var text;
+    var timeDancing;
+    var strTimeDancing;
+    var numCollisions;
+
+    timeDancing = new Date(GLOBALS.timeDancing);
+    strTimeDancing = timeDancing.getMinutes() + ':';
+    if (timeDancing.getSeconds() == 0) {
+      strTimeDancing += '00';
+    }
+    else if (timeDancing.getSeconds() < 10) {
+      strTimeDancing += '0' + timeDancing.getSeconds();
+    }
+    else {
+      strTimeDancing += timeDancing.getSeconds();
+    }
+
+    numCollisions = GLOBALS.numEnemiesCollided + GLOBALS.numTablesCollided;
+
+    statMsg = 'Time Spent Dancing: ' + strTimeDancing + '\n'
+        + 'Tables & dancers hit: ' + numCollisions;
+
+    style = {
+      'font-family': '"Proxima Nova", "Helvetica Neue", "Helvetica", "Arial", sans-serif',
+      'font-size': '18px',
+      'fill': '#fff'
+    };
+
+    // Display text on the canvas
+    text = game.add.text(game.world.centerX, game.world.centerY + 150, statMsg, style);
+    text.anchor.set(0.5);
+    text.alpha = 0;
+
+    // Animate alpha channel
+    game.add.tween(text).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.None, true, 0, 0, false);
   }
 
   /**
