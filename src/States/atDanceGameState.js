@@ -106,6 +106,7 @@ function AtDanceGame() {
 
     for (var i = 0; i < enemyCount; i++) {
       var couple = enemies.create(game.rnd.realInRange(0, BOARD_WIDTH), game.rnd.realInRange(0, BOARD_HEIGHT-25), 'enemyImg');
+      couple.anchor.setTo(0.5, 0.5);
       couple.body.collideWorldBounds = true;
       couple.body.allowGravity = false;
       couple.body.bounce.setTo(1,1);
@@ -124,11 +125,12 @@ function AtDanceGame() {
     //draws player
     player = game.add.sprite(10, BOARD_HEIGHT/2 - 12.5, 'playerImg');
     player.name = 'player';
+    player.anchor.setTo(0.5,0.5);
     game.physics.arcade.enable(player);
     player.body.allowGravity = false;
     player.body.collideWorldBounds = true;
     player.body.bounce.setTo(200,200);
-    player.body.velocity = 3;
+    player.body.velocity.setTo(0,0);
 
     //start button
     startButton = game.add.button(game.world.centerX - game.cache.getImage('startButtonImg').width/2, game.world.centerY - game.cache.getImage('startButtonImg').height/2, 'startButtonImg', null, null, 2, 1, 0);
@@ -158,10 +160,6 @@ function AtDanceGame() {
     game.physics.arcade.collide(player, enemies, touchItem, null,
       {type: 'enemy', itemPickedUp: enemyDialogue, dialogueName: enemyDialogue[game.rnd.between(0, 2)], duration: 2000});
 
-    //@todo:change it so the enemy dialogue chooses randomly for each individual collision 
-
-    //game.physics.arcade.overlap(player, enemies, touchItem, null, {type: 'enemy', itemPickedUp: enemyDialogue, dialogueName: 'enemyDialogue'});
-
     game.physics.arcade.collide(enemies, tables);
     game.physics.arcade.overlap(enemies, tables);
 
@@ -187,20 +185,12 @@ function AtDanceGame() {
   }
 
   function updatePlayer() {
-    //mouse following
-    var yDistance = game.input.mousePointer.y - player.y;
-    var xDistance = game.input.mousePointer.x - player.x;
-    if (Math.sqrt(yDistance*yDistance +  xDistance*xDistance) < player.body.velocity) {
-      //prevents jitter when sprite is at mouse location
-      player.x = game.input.mousePointer.x;
-      player.y = game.input.mousePointer.y;
-    } else {
-      //points sprite in direction of mouse and moves it based on speed
-      var directionAngle = game.math.angleBetween(player.x, player.y, game.input.mousePointer.x, game.input.mousePointer.y);
-      player.angle = directionAngle * 180 / Math.PI;
-      player.x += Math.cos(directionAngle) * player.body.velocity;
-      player.y += Math.sin(directionAngle) * player.body.velocity;
+    // mouse following
+    game.physics.arcade.moveToPointer(player, 250);
+    if (Phaser.Rectangle.contains(player.body, game.input.x, game.input.y)) {
+      player.body.velocity.setTo(0, 0);
     }
+    player.angle += 5;
   }
 
   function touchItem() {
