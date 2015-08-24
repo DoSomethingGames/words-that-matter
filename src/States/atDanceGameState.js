@@ -29,6 +29,9 @@ function AtDanceGame() {
   var dialogue;
   var itemsCount;
 
+  // Time when dancing starts
+  var timeStart;
+
   function init() {
     BOARD_HEIGHT = 600;
     BOARD_WIDTH = 800;
@@ -211,6 +214,13 @@ function AtDanceGame() {
         transitionToNextState();
       }
     }
+    else if (this.type == 'table') {
+      GLOBALS.numTablesCollided++;
+    }
+    else if (this.type == 'enemy') {
+      GLOBALS.numEnemiesCollided++;
+    }
+
     game.paused = true;
     player.body.enable = false;
     // 350 and 100 are half the size of the dialogue asset
@@ -237,6 +247,8 @@ function AtDanceGame() {
 
     instructions.kill();
     instructions = null;
+
+    timeStart = (new Date()).getTime();
   }
 
   /**
@@ -282,6 +294,7 @@ function AtDanceGame() {
    * Begin transition to the next state with a fade out.
    */
   function transitionToNextState() {
+    var timeEnd;
     var properties = {alpha: 0};
     var fadeOutDuration = 2000;
     var ease = Phaser.Easing.Linear.None;
@@ -299,6 +312,10 @@ function AtDanceGame() {
     game.add.tween(player).to(properties, fadeOutDuration, ease, autoStart, delay, repeat, yoyo);
     game.add.tween(tables).to(properties, fadeOutDuration, ease, autoStart, delay, repeat, yoyo);
     setTimeout(startNextState, fadeOutDuration + delay - 250);
+
+    // End timer
+    timeEnd = (new Date()).getTime();
+    GLOBALS.timeDancing = timeEnd - timeStart;
   }
 
   /**
