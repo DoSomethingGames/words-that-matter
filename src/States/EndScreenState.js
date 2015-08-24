@@ -45,7 +45,7 @@ function EndScreen() {
   }
 
   function displayNext() {
-    var delay = 3000;
+    var delay = 4000;
     var animation;
 
     animation = game.add.tween(curFact).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.None, true, 0, 0, false);
