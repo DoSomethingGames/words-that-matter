@@ -15,6 +15,7 @@ define(function() {
 
     function create() {
       console.log('StartScreen.create()');
+      game.add.text(50, 50, 'WORDS THAT MATTER', {fill: '#fff'});
     }
 
     function update() {
@@ -38,7 +39,6 @@ define(function() {
 
     setup: function() {
       game.state.add(TAG, new StartScreen());
-      console.log('START SCREEN');
     }
   };
 });

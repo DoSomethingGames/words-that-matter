@@ -1,12 +1,12 @@
 {
   "name": "game",
   "version": "2.0.0",
-  "description": "A simple template project to quickly get up and running with Phaser.",
+  "description": "A DoSomething.org game about healthy relationships.",
   "main": "deploy/index.html",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": "http://github.com/DoSomethingGames/phaser-project-template",
+  "repository": "http://github.com/DoSomethingGames/words-that-matter",
   "license": "MIT",
   "dependencies": {
     "dosomething-neue": "^6.4.0"

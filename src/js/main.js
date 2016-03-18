@@ -3,19 +3,32 @@ var game;
 (function() {
   'use strict';
 
-  game = new Phaser.Game(800, 600, Phaser.AUTO, 'game');
-
   requirejs.config({
     baseUrl: 'js/',
+    paths: {
+      phaser: 'lib/phaser'
+    },
+    shim: {
+      'phaser': {
+        exports: 'Phaser'
+      }
+    }
   });
 
-  requirejs([
-      './scenes/start/startscreen'
-    ], function() {
+  require(['phaser'], function(Phaser) {
 
-      var startscreen = require('./scenes/start/startscreen');
-      startscreen.setup();
+    game = new Phaser.Game(800, 600, Phaser.AUTO, 'game');
 
-      game.state.start(startscreen.getName());
-    });
+    requirejs([
+        './scenes/start/startscreen'
+      ], function() {
+
+        var startscreen = require('./scenes/start/startscreen');
+        startscreen.setup();
+
+        game.state.start(startscreen.getName());
+
+      });
+
+  });
 }());
