@@ -23,10 +23,8 @@ var game;
         './scenes/start/startscreen'
       ], function() {
 
-        var startscreen = require('./scenes/start/startscreen');
-        startscreen.setup();
-
-        game.state.start(startscreen.getName());
+        // Starts the game on the start screen
+        require('./scenes/start/startscreen').start();
 
       });
 

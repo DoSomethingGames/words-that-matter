@@ -1,44 +1,40 @@
-define(function() {
+define([
+  'scenes/BaseScene',
+  'scenes/scene1/scene1'
+],
+function(BaseScene, Scene1) {
+  'use strict';
+
   var TAG = 'start-screen';
+
   /**
-   * @todo comment me
+   * Constructor. StartScene inherits BaseScene.
    */
-  function StartScreen() {
+  function StartScene() {}
+  StartScene.prototype = Object.create(BaseScene.prototype);
 
-    function init() {
-      console.log('StartScreen.init()');
-    }
+  StartScene.prototype.create = function() {
+    var text = game.add.text(50, 50, 'WORDS THAT MATTER', {fill: '#fff'});
+    text.inputEnabled = true;
+    text.events.onInputDown.add(onInputDown, this);
+    text.events.onInputUp.add(onStartClicked, this);
+  };
 
-    function preload() {
-      console.log('StartScreen.preload()');
-    }
+  function onInputDown(item) {
+    item.fill = '#0ff';
+  }
 
-    function create() {
-      console.log('StartScreen.create()');
-      game.add.text(50, 50, 'WORDS THAT MATTER', {fill: '#fff'});
-    }
-
-    function update() {
-    }
-
-    return {
-      init: init,
-      preload: preload,
-      create: create,
-      update: update
-    };
+  function onStartClicked(item) {
+    Scene1.start();
   }
 
   /**
-   * @todo comment me
+   * Module API exposed through requirejs.
    */
   return {
-    getName: function() {
-      return TAG;
-    },
-
-    setup: function() {
-      game.state.add(TAG, new StartScreen());
+    start: function() {
+      game.state.add(TAG, new StartScene());
+      game.state.start(TAG);
     }
   };
 });
