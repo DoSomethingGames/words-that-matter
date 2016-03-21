@@ -4,16 +4,16 @@ define([
 function(NarrationSequence) {
   'use strict';
 
-  function S1Narration01() {
+  function S1Sq01Narration() {
     this.current = null;
     this.buttonNext = null;
     this.order = [];
     this.currentOrderPos = 0;
   }
 
-  S1Narration01.prototype = Object.create(NarrationSequence.prototype);
+  S1Sq01Narration.prototype = Object.create(NarrationSequence.prototype);
 
-  S1Narration01.prototype.onPreload = function() {
+  S1Sq01Narration.prototype.onPreload = function() {
     NarrationSequence.prototype.onPreload.call(this);
 
     game.load.image('narrative1', 'assets/getting-ready/GR_narrative1.png');
@@ -27,7 +27,7 @@ function(NarrationSequence) {
     ];
   };
 
-  S1Narration01.prototype.onCreate = function() {
+  S1Sq01Narration.prototype.onCreate = function() {
     NarrationSequence.prototype.onCreate.call(this);
 
     this.buttonNext = game.add.text(game.world.centerX, game.world.height - 100, 'NEXT', {fill: '#aaa'});
@@ -36,7 +36,7 @@ function(NarrationSequence) {
     this.buttonNext.events.onInputUp.add(onNextClicked, this);
   };
 
-  S1Narration01.prototype.onUpdate = function() {
+  S1Sq01Narration.prototype.onUpdate = function() {
     NarrationSequence.prototype.onUpdate.call(this);
 
     if (this.current === null) {
@@ -54,5 +54,5 @@ function(NarrationSequence) {
     this.current = game.add.sprite(100, 100, this.order[this.currentOrderPos]);
   }
 
-  return S1Narration01;
+  return S1Sq01Narration;
 });

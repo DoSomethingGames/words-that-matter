@@ -1,8 +1,13 @@
 define([
   'scenes/BaseScene',
-  'scenes/scene1/S1Narration01',
+  'scenes/scene1/S1Sq01Narration',
+  'scenes/scene1/S1Sq02Transition',
 ],
-function(BaseScene, S1Narration01) {
+function(
+  BaseScene,
+  S1Sq01Narration,
+  S1Sq02Transition
+) {
   'use strict';
 
   var TAG = 'scene-1';
@@ -11,10 +16,12 @@ function(BaseScene, S1Narration01) {
    * Constructor. Scene1 inherits BaseScene.
    */
   function Scene1() {
-    var narration1 = new S1Narration01();
+    var sq01 = new S1Sq01Narration();
+    var sq02 = new S1Sq02Transition();
 
     this.sequences = [
-      narration1,
+      sq01,
+      sq02
     ];
   }
   Scene1.prototype = Object.create(BaseScene.prototype);
