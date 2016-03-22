@@ -32,7 +32,7 @@ function(NarrationSequence) {
   S1Sq01Narration.prototype.start = function() {
     NarrationSequence.prototype.onCreate.call(this);
 
-    this.buttonNext = game.add.text(game.world.centerX, game.world.height - 100, 'NEXT', {fill: '#aaa'});
+    this.buttonNext = game.add.text(game.world.centerX, game.world.height - 100, 'NEXT', {fill: '#fff'});
     this.buttonNext.inputEnabled = true;
     this.buttonNext.events.onInputDown.add(onNextDown, this);
     this.buttonNext.events.onInputUp.add(onNextClicked, this);

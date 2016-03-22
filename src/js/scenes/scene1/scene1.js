@@ -33,10 +33,19 @@ function(
   Scene1.prototype = Object.create(BaseScene.prototype);
   Scene1.prototype.tag = TAG;
 
-  Scene1.prototype.create = function() {
-    BaseScene.prototype.create.call(this);
+  Scene1.prototype.preload = function() {
+    BaseScene.prototype.preload.call(this);
 
+    game.load.image('sc1-background', 'assets/backgrounds/sc1-bg-example.png');
+  };
+
+  Scene1.prototype.create = function() {
+    game.add.tileSprite(0, 0, 800, 600, 'sc1-background');
     game.add.text(50, 50, 'SCENE 1', {fill: '#fff'});
+
+    // I think this needs to go last because otherwise, the background will be
+    // drawn over top any sequence stuff called from the superclass.
+    BaseScene.prototype.create.call(this);
   };
 
   /**
