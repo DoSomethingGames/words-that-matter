@@ -2,11 +2,13 @@ define([
   'scenes/BaseScene',
   'scenes/scene1/S1Sq01Narration',
   'scenes/scene1/S1Sq02Transition',
+  'scenes/scene2/scene2'
 ],
 function(
   BaseScene,
   S1Sq01Narration,
-  S1Sq02Transition
+  S1Sq02Transition,
+  Scene2
 ) {
   'use strict';
 
@@ -25,8 +27,11 @@ function(
       sq01,
       sq02
     ];
+
+    this.setNextScene(Scene2);
   }
   Scene1.prototype = Object.create(BaseScene.prototype);
+  Scene1.prototype.tag = TAG;
 
   Scene1.prototype.create = function() {
     BaseScene.prototype.create.call(this);

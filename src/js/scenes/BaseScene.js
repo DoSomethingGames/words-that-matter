@@ -4,14 +4,20 @@ define([
 function(BaseSceneSequence) {
   'use strict';
 
+  var TAG = 'base-scene';
+
   /**
    * Parent class all scenes should inherit. Provides base functionality
    * for all scenes and basic structure for Phaser states.
    */
   function BaseScene() {
+    this.nextScene;
+    this.tag = TAG;
     this.sequences = [];
     this.currentSequence = 0;
   }
+
+  BaseScene.prototype.tag = TAG;
 
   BaseScene.prototype.init = function() {
   };
@@ -40,7 +46,12 @@ function(BaseSceneSequence) {
     }
 
     // Start the first sequence
-    this.sequences[0].start();
+    if (this.sequences.length === 0) {
+      console.assert('There are no sequences set for scene: %s', this.tag);
+    }
+    else {
+      this.sequences[0].start();
+    }
   };
 
   BaseScene.prototype.update = function() {
@@ -55,11 +66,24 @@ function(BaseSceneSequence) {
     }
   };
 
+  BaseScene.prototype.setNextScene = function(scene) {
+    this.nextScene = scene;
+  };
+
   BaseScene.prototype.onCurrentSequenceEnd = function() {
     this.currentSequence++;
 
     if (this.currentSequence < this.sequences.length) {
       this.sequences[this.currentSequence].start();
+    }
+    else {
+      this.end();
+    }
+  };
+
+  BaseScene.prototype.end = function() {
+    if (typeof this.nextScene !== 'undefined') {
+      this.nextScene.start();
     }
   };
 

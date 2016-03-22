@@ -10,8 +10,13 @@ function(BaseScene, Scene1) {
   /**
    * Constructor. StartScene inherits BaseScene.
    */
-  function StartScene() {}
+  function StartScene() {
+    BaseScene.call(this);
+
+    this.setNextScene(Scene1);
+  }
   StartScene.prototype = Object.create(BaseScene.prototype);
+  StartScene.prototype.tag = TAG;
 
   StartScene.prototype.create = function() {
     var text = game.add.text(50, 50, 'WORDS THAT MATTER', {fill: '#fff'});
@@ -25,7 +30,7 @@ function(BaseScene, Scene1) {
   }
 
   function onStartClicked(item) {
-    Scene1.start();
+    this.end();
   }
 
   /**
