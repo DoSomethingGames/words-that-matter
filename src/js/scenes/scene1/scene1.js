@@ -16,8 +16,10 @@ function(
    * Constructor. Scene1 inherits BaseScene.
    */
   function Scene1() {
-    var sq01 = new S1Sq01Narration();
-    var sq02 = new S1Sq02Transition();
+    BaseScene.call(this);
+
+    var sq01 = new S1Sq01Narration(this);
+    var sq02 = new S1Sq02Transition(this);
 
     this.sequences = [
       sq01,

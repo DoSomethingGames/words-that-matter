@@ -4,7 +4,8 @@ define([
 function(BaseSceneSequence) {
   'use strict'
 
-  function TransitionSequence() {
+  function TransitionSequence(scene) {
+    BaseSceneSequence.call(this, scene);
   }
   TransitionSequence.prototype = Object.create(BaseSceneSequence.prototype);
 

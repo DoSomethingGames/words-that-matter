@@ -4,7 +4,8 @@ define([
 function(BaseSceneSequence) {
   'use strict'
 
-  function NarrationSequence() {
+  function NarrationSequence(scene) {
+    BaseSceneSequence.call(this, scene);
   }
   NarrationSequence.prototype = Object.create(BaseSceneSequence.prototype);
 

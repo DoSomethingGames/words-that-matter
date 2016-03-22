@@ -10,6 +10,7 @@ function(BaseSceneSequence) {
    */
   function BaseScene() {
     this.sequences = [];
+    this.currentSequence = 0;
   }
 
   BaseScene.prototype.init = function() {
@@ -37,6 +38,9 @@ function(BaseSceneSequence) {
 
       this.sequences[i].onCreate();
     }
+
+    // Start the first sequence
+    this.sequences[0].start();
   };
 
   BaseScene.prototype.update = function() {
@@ -48,6 +52,14 @@ function(BaseSceneSequence) {
       }
 
       this.sequences[i].onUpdate();
+    }
+  };
+
+  BaseScene.prototype.onCurrentSequenceEnd = function() {
+    this.currentSequence++;
+
+    if (this.currentSequence < this.sequences.length) {
+      this.sequences[this.currentSequence].start();
     }
   };
 

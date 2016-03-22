@@ -7,7 +7,8 @@ define(function() {
    * through a series of sequences. This class acts as the base for
    * those sequencess.
    */
-  function BaseSceneSequence() {
+  function BaseSceneSequence(scene) {
+    this.scene = scene;
     this.next = null;
   }
 
@@ -33,7 +34,8 @@ define(function() {
   BaseSceneSequence.prototype.start = function() {
   };
 
-  BaseSceneSequence.prototype.goToNext = function() {
+  BaseSceneSequence.prototype.end = function() {
+    this.scene.onCurrentSequenceEnd();
   };
 
   return BaseSceneSequence;
