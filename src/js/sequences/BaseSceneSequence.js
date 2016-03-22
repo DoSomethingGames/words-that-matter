@@ -9,31 +9,36 @@ define(function() {
    */
   function BaseSceneSequence(scene) {
     this.scene = scene;
-    this.next = null;
   }
 
+  /**
+   * Called in the scene's preload method.
+   */
   BaseSceneSequence.prototype.onPreload = function() {
   }
 
+  /**
+   * Called in the scene's create method.
+   */
   BaseSceneSequence.prototype.onCreate = function() {
   }
 
+  /**
+   * Called in the scene's update loop.
+   */
   BaseSceneSequence.prototype.onUpdate = function() {
   }
 
-  BaseSceneSequence.prototype.setNextSequence = function(sequence) {
-    if (sequence instanceof BaseSceneSequence === false) {
-      console.error('Cannot set a ' + typeof sequence + ' as a scene Sequence');
-      console.trace();
-      return;
-    }
-
-    this.next = sequence;
-  };
-
+  /**
+   * Called to start a sequence.
+   */
   BaseSceneSequence.prototype.start = function() {
   };
 
+  /**
+   * Called to end a sequence. Override this in child classes
+   * to do any custom cleanup.
+   */
   BaseSceneSequence.prototype.end = function() {
     this.scene.onCurrentSequenceEnd();
   };
