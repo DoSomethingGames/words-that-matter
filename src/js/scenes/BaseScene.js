@@ -96,7 +96,7 @@ function(BaseSceneSequence) {
     var i;
 
     for (i = 0; this.sequences != null && i < this.sequences.length; i++) {
-      if (! isBaseSceneSequence(this.sequences[i])) {
+      if (! isBaseSceneSequence(this.sequences[i]) || ! this.sequences[i].hasStarted) {
         continue;
       }
 

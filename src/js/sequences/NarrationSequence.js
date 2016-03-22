@@ -51,7 +51,7 @@ function(BaseSceneSequence) {
    * Start the sequence.
    */
   NarrationSequence.prototype.start = function() {
-    BaseSceneSequence.prototype.onCreate.call(this);
+    BaseSceneSequence.prototype.start.call(this);
 
     this.buttonNext = game.add.text(game.world.centerX, game.world.height - 100, 'NEXT', {fill: '#fff'});
     this.buttonNext.inputEnabled = true;

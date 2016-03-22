@@ -8,7 +8,11 @@ define(function() {
    * those sequencess.
    */
   function BaseSceneSequence(scene) {
+    // Reference to the owning scene
     this.scene = scene;
+
+    // True if the sequence has started
+    this.hasStarted = false;
   }
 
   /**
@@ -33,6 +37,7 @@ define(function() {
    * Called to start a sequence.
    */
   BaseSceneSequence.prototype.start = function() {
+    this.hasStarted = true;
   };
 
   /**

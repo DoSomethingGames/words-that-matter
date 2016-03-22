@@ -2,12 +2,14 @@ define([
   'scenes/BaseScene',
   'scenes/scene1/S1Sq01Narration',
   'scenes/scene1/S1Sq02Transition',
+  'scenes/scene1/S1Sq03Narration',
   'scenes/scene2/scene2'
 ],
 function(
   BaseScene,
   S1Sq01Narration,
   S1Sq02Transition,
+  S1Sq03Narration,
   Scene2
 ) {
   'use strict';
@@ -20,12 +22,10 @@ function(
   function Scene1() {
     BaseScene.call(this);
 
-    var sq01 = new S1Sq01Narration(this);
-    var sq02 = new S1Sq02Transition(this);
-
     this.sequences = [
-      sq01,
-      sq02
+      new S1Sq01Narration(this),
+      new S1Sq02Transition(this),
+      new S1Sq03Narration(this)
     ];
 
     this.setNextScene(Scene2);
