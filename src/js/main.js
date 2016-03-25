@@ -17,7 +17,7 @@ var game;
 
   require(['phaser'], function(Phaser) {
 
-    game = new Phaser.Game(800, 600, Phaser.AUTO, 'game');
+    game = new Phaser.Game(1280, 800, Phaser.AUTO, 'game');
 
     requirejs([
         './scenes/start/startscreen'
