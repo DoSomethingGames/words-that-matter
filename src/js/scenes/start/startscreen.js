@@ -1,8 +1,8 @@
 define([
   'scenes/BaseScene',
-  'scenes/scene1/scene1'
+  'scenes/vertical1/scene'
 ],
-function(BaseScene, Scene1) {
+function(BaseScene, theNextScene) {
   'use strict';
 
   var TAG = 'start-screen';
@@ -13,7 +13,7 @@ function(BaseScene, Scene1) {
   function StartScene() {
     BaseScene.call(this);
 
-    this.setNextScene(Scene1);
+    this.setNextScene(theNextScene);
   }
   StartScene.prototype = Object.create(BaseScene.prototype);
   StartScene.prototype.tag = TAG;
