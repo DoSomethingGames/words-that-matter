@@ -1,10 +1,12 @@
 define([
   'scenes/BaseScene',
   'sequences/DelaySequence',
+  'util/SpriteUtils'
 ],
 function(
   BaseScene,
-  DelaySequence
+  DelaySequence,
+  SpriteUtils
 ) {
   'use strict';
 
@@ -23,11 +25,11 @@ function(
   Vertical1Scene.prototype.preload = function() {
     BaseScene.prototype.preload.call(this);
 
-    game.load.image('vs1-background', 'assets/backgrounds/vs1-background.png');
+    game.load.image('vs1-background', 'assets/backgrounds/vs1-background.jpg');
   };
 
   Vertical1Scene.prototype.create = function() {
-    game.add.tileSprite(0, 0, 1280, 800, 'vs1-background');
+    SpriteUtils.addBackground('vs1-background');
 
     BaseScene.prototype.create.call(this);
   };
