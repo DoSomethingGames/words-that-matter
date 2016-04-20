@@ -2,7 +2,6 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-connect');
   grunt.loadNpmTasks('grunt-open');
-  grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-copy');
 
@@ -25,6 +24,7 @@ module.exports = function (grunt) {
           {src: ['src/index.html'], dest: 'deploy/index.html'},
           {cwd: 'src/css', src: '**/*', dest: 'deploy/css', expand: true},
           {cwd: 'src/assets', src: '**/*', dest: 'deploy/assets', expand: true},
+          {cwd: 'src/js', src: '**/*', dest: 'deploy/js', expand: true},
           {cwd: 'node_modules/dosomething-neue/dist/assets', src: '**/*', dest: 'deploy/vendor/assets', expand: true},
           {src: ['node_modules/dosomething-neue/dist/modernizr.js'], dest: 'deploy/vendor/modernizr.js'},
           {src: ['node_modules/dosomething-neue/dist/neue.js'], dest: 'deploy/vendor/neue.js'},
@@ -32,23 +32,9 @@ module.exports = function (grunt) {
         ]
       }
     },
-    concat: {
-      dist: {
-        src: [  'src/lib/**/*.js',
-          'src/game/main.js',
-          'src/States/StartScreenState.js',
-          'src/States/GettingReadyState.js',
-          'src/States/atPromState.js',
-          'src/States/atDanceGameState.js',
-          'src/States/BystanderInterventionState.js',
-          'src/States/EndScreenState.js'
-           ],
-        dest: 'deploy/js/<%= pkg.name %>.js'
-      }
-    },
     watch: {
-      files: 'src/**/*.js',
-      tasks: ['concat']
+      files: ['src/index.html', 'src/**/*.js'],
+      tasks: ['copy']
     },
     open: {
       dev: {
@@ -57,6 +43,6 @@ module.exports = function (grunt) {
     }
   });
 
-  grunt.registerTask('default', ['clean', 'copy', 'concat', 'connect', 'open', 'watch']);
+  grunt.registerTask('default', ['clean', 'copy', 'connect', 'open', 'watch']);
 
 }
