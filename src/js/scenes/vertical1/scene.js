@@ -1,10 +1,14 @@
 define([
   'scenes/BaseScene',
+  'scenes/vertical1/VS1Sq01Narration',
+  'scenes/vertical1/VS1Sq02Transition',
   'sequences/DelaySequence',
   'util/SpriteUtils'
 ],
 function(
   BaseScene,
+  VS1Sq01Narration,
+  VS1Sq02Transition,
   DelaySequence,
   SpriteUtils
 ) {
@@ -16,7 +20,9 @@ function(
     BaseScene.call(this);
 
     this.sequences = [
-      new DelaySequence(this, 2000)
+      new DelaySequence(this, 2000),
+      new VS1Sq01Narration(this),
+      new VS1Sq02Transition(this)
     ];
   }
   Vertical1Scene.prototype = Object.create(BaseScene.prototype);
