@@ -29,11 +29,12 @@ function(BaseScene, theNextScene) {
 
     game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL;
 
-    var text = game.add.text(50, 50, 'WORDS THAT MATTER', {fill: '#fff'});
+    var text = game.add.text(50, 50, 'WORDS THAT MATTER - VS1', {fill: '#fff'});
     text.inputEnabled = true;
     text.events.onInputDown.add(onInputDown, this);
     text.events.onInputUp.add(onStartClicked, this);
 
+    /* Removing the fullscreen icon and functionality for now.
     var icFullscreen = game.add.sprite(game.world.width - 64, game.world.height - 64, 'icon-fullscreen');
     icFullscreen.anchor.set(0.5, 0.5);
     icFullscreen.width = 64;
@@ -42,6 +43,7 @@ function(BaseScene, theNextScene) {
     icFullscreen.events.onInputOver.add(onFullscreenBtnOver, this);
     icFullscreen.events.onInputOut.add(onFullscreenBtnOut, this);
     icFullscreen.events.onInputUp.add(onFullscreenBtnUp, this);
+    */
   };
 
   function onInputDown(item) {
