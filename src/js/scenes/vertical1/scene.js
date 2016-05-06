@@ -2,6 +2,7 @@ define([
   'scenes/BaseScene',
   'scenes/vertical1/VS1Sq01Narration',
   'scenes/vertical1/VS1Sq02Transition',
+  'scenes/vertical1/VS1Sq03Narration',
   'sequences/DelaySequence',
   'util/SpriteUtils'
 ],
@@ -9,6 +10,7 @@ function(
   BaseScene,
   VS1Sq01Narration,
   VS1Sq02Transition,
+  VS1Sq03Narration,
   DelaySequence,
   SpriteUtils
 ) {
@@ -22,7 +24,8 @@ function(
     this.sequences = [
       new DelaySequence(this, 2000),
       new VS1Sq01Narration(this),
-      new VS1Sq02Transition(this)
+      new VS1Sq02Transition(this),
+      new VS1Sq03Narration(this),
     ];
   }
   Vertical1Scene.prototype = Object.create(BaseScene.prototype);
